@@ -1,42 +1,131 @@
-#root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+body{
+  scroll-behavior: smooth;
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+body::-webkit-scrollbar{
+  width: 5px;
+  background-color: rgb(133, 133, 133);
 }
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
+body::-webkit-scrollbar-thumb{
+  border-radius: 5px;
+  background-color: #0a1820;
+
+}
+
+body::-webkit-scrollbar-track-piece{
+  background-color: #6b6b6b;
+  border-radius: 5px;
+
+}
+.light{
+  background-color: #ffffff;
+  color: black;
+}
+
+.dark{
+  background-color: rgb(66, 66, 66);
+  color: white;
+}
+
+
+.heroSectionContainer {
+  display: grid;
+  align-items: center;
+  justify-content: space-between;
+  justify-items: end;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: repeat(4, 1fr);
+}
+  
+.leftSection {
+  grid-row: span 4 / span 4 ;
+}
+
+.rightSection {
+  grid-row: span 4 / span 4;
+}
+
+/* Stats Container Styles */
+
+.statsContainer{
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: space-evenly;
+  align-items: center;
+}
+
+.statsContainer .stat p{
+font-weight: 600;
+text-align: start;
+}
+
+/* Card Styles */
+
+.card-container{
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  gap: 2rem;
+}
+
+.card-container img{
+  border-radius: 10px;
+}
+
+/* Default dot color */
+.ant-carousel .slick-dots li button {
+  background-color: red !important; /* Change default dot color */
+  opacity: 0.5; /* Make it slightly transparent */
+  transition: green 0.3s ease-in-out;
+}
+
+/* Active dot (filling effect) */
+.ant-carousel .slick-dots li.slick-active button {
+  background-color: blue !important; /* Change active dot color */
+  opacity: 1; /* Fully visible */
+  transform: scale(1.2); /* Slightly enlarge */
+  transition: all 0.3s ease-in-out;
+}
+
+.container{
+    animation: appear ease;
+    animation-timeline: view();
+    animation-range: entry 0 cover 40%;
+}
+
+@keyframes appear {
+    0% {
+        scale: 0.5;
+    }
+
+    100% {
+        scale: 1;
+    }
+}
+
+.card-container{
+  border: 1px solid gray;
+  width: 100%;
+  border-radius: 10px;
+}
+/* Media Quesries */
+@media (max-width: 576px) { 
+  .carousel .card-container .image{
+    display: none;
   }
-  to {
-    transform: rotate(360deg);
+
+  .card-container{
+    border: 1px solid gray;
+    width: 100%;
+    border-radius: 10px;
   }
-}
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
+
+  .heroSectionContainer {
+    justify-items: center;
+    grid-template-columns: repeat(1, 1fr);
+    grid-template-rows: repeat(4, 1fr);
   }
-}
-
-.card {
-  padding: 2em;
-}
-
-.read-the-docs {
-  color: #888;
 }
