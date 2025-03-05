@@ -61,7 +61,7 @@ font-weight: 600;
 text-align: start;
 }
 
-/* Card Styles */
+/* Carousel-Card Styles */
 
 .card-container{
   display: flex;
@@ -76,17 +76,52 @@ text-align: start;
 
 /* Default dot color */
 .ant-carousel .slick-dots li button {
-  background-color: red !important; /* Change default dot color */
-  opacity: 0.5; /* Make it slightly transparent */
+  background-color: red !important; 
+  opacity: 0.5; 
   transition: green 0.3s ease-in-out;
 }
 
 /* Active dot (filling effect) */
 .ant-carousel .slick-dots li.slick-active button {
-  background-color: blue !important; /* Change active dot color */
-  opacity: 1; /* Fully visible */
-  transform: scale(1.2); /* Slightly enlarge */
+  background-color: blue !important; 
+  opacity: 1;
+  transform: scale(1.2); 
   transition: all 0.3s ease-in-out;
+}
+
+/* Card Container */
+
+.card-section {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: repeat(8, 1fr);
+  gap: 10px;
+}
+
+.card{
+  padding-inline: .5rem;
+  height: 35vh;
+}
+  
+.card1 {
+  grid-row: span 4 / span 4;
+  background: url(./feature1.png) center center/cover;
+
+
+}
+
+.card2 {
+  grid-row: span 4 / span 4;
+}
+
+.card3 {
+  grid-row: span 4 / span 4;
+  grid-row-start: 5;
+}
+
+.card4 {
+  grid-row: span 4 / span 4;
+  grid-row-start: 5;
 }
 
 .container{
@@ -94,6 +129,8 @@ text-align: start;
     animation-timeline: view();
     animation-range: entry 0 cover 40%;
 }
+
+/*  */
 
 @keyframes appear {
     0% {
@@ -110,6 +147,8 @@ text-align: start;
   width: 100%;
   border-radius: 10px;
 }
+
+
 /* Media Quesries */
 @media (max-width: 576px) { 
   .carousel .card-container .image{
