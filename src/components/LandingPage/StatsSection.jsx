@@ -31,9 +31,11 @@ const StatsSection = () => {
 
     return (
         <>
-            <hr className='mx-3' />
+        <div id='stats'>
 
-            <div id='stats' className="container statsContainer text-center">
+            <hr  className='mx-3' />
+
+            <div  className="container statsContainer text-center">
                 {counts.map((count, index) => (
                     <div key={index} className={`stat stat${index + 1}`}>
                         <h1>{count}+</h1>
@@ -43,6 +45,7 @@ const StatsSection = () => {
             </div>
 
             <hr className='mx-3' />
+        </div>
         </>
     );
 };
