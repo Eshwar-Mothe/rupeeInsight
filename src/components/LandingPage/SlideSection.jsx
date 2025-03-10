@@ -10,7 +10,7 @@ const SlideSection = () => {
     };
     return (
         <>
-            <div className="container carousel my-5">
+            <div id='features' className="container carousel">
                 <h3 className='text-center'>Features</h3>
                 <Carousel
                     autoplay={{
