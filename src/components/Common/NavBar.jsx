@@ -20,7 +20,7 @@ const NavBar = () => {
   }
 
   const [Theme, setTheme] = useState(() => {
-    return localStorage.getItem("theme") || "⛅";
+    return localStorage.getItem("theme") || "🌙";
   });
   const [animate, setAnimate] = useState(false);
 
@@ -40,13 +40,13 @@ const NavBar = () => {
 
 
   useEffect(() => {
-    document.body.classList.remove("light", "dark");
-    document.body.classList.add(Theme === "⛅" ? "light" : "dark");
+    document.body.classList.remove("dark", "light");
+    document.body.classList.add(Theme === "🌙" ? "light" : "dark");
 
     const navbar = document.getElementById("navBar");
     if (navbar) {
       navbar.classList.remove("bg-light", "bg-dark-subtle");
-      navbar.classList.add(Theme === "⛅" ? "bg-light" : "bg-dark-subtle");
+      navbar.classList.add(Theme === "🌙" ? "bg-light" : "bg-dark-subtle");
     }
   }, [Theme]);
 
