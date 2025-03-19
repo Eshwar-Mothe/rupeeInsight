@@ -59,6 +59,8 @@ const Login = () => {
             <Link to="/forgot-password" className='link'>Forgot Password</Link>
             <span style={{ margin: '0 8px' }}>|</span>
             <span>New User?<Link to="/signup" className='link'> Sign up</Link></span>
+            <span style={{ margin: '0 8px' }}>|</span>
+            <span>Try Features?<Link to="/home" className='link'> Guest Mode</Link></span>
           </div>
         </div>
       </div>
