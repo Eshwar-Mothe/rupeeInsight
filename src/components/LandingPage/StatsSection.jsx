@@ -32,7 +32,6 @@ const StatsSection = () => {
     return (
         <>
         <div id='stats'>
-
             <hr  className='mx-3' />
 
             <div  className="container statsContainer text-center">

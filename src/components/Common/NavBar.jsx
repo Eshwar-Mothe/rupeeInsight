@@ -74,7 +74,7 @@ const NavBar = () => {
     <>
       <nav id='navBar' className="navbar  bg-body-tertiary navbar-expand-lg">
         <div className="container-fluid ">
-          <Link className="navbar-brand" to="/">
+          <Link className="navbar-brand " to="/">
             <img src={logo} alt="rupeeInsight" width="40" height="40" />Rupee Insight
           </Link>
           <button id='toggle' className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -101,10 +101,7 @@ const NavBar = () => {
               <a className="nav-link " href="#taxCal">Tax Calculator</a>
             </li>
             <li className="nav-item">
-              <a className="nav-link" href={'#security'}>Security</a>
-            </li>
-            <li className="nav-item">
-              <a className="nav-link" href={'#joinForm'}>Register/Login</a>
+              <Link className="nav-link" to={'/signup'}>Register/Login</Link>
             </li>
           </ul>
 

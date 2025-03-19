@@ -2,14 +2,27 @@ import React from 'react'
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap/dist/js/bootstrap.js'
 import LandingPage from './components/LandingPage/LandingPage'
-import { BrowserRouter } from 'react-router-dom'
+import { Route, Routes } from 'react-router-dom'
 import './App.css'
+import Signup from './components/Common/Forms/Signup'
+import Login from './components/Common/Forms/Login'
+import Home from './components/Dashboard/Home'
+import Expenses from './components/Dashboard/Expenses'
+import Debts from './components/Dashboard/Debts'
+import Investments from './components/Dashboard/Investments'
 const App = () => {
   return (
     <>
-      <BrowserRouter>
-        <LandingPage />
-      </BrowserRouter>
+      <Routes>
+        <Route path='/' element={<LandingPage />} />
+        <Route path='/signup' element={<Signup />} />
+        <Route path='/signin' element={<Login />} />
+        <Route path='/home' element={<Home />} />
+        <Route path='/expenses' element={<Expenses />} />
+        <Route path='/debts' element={<Debts />} />
+        <Route path='/investments' element={<Investments />} />
+        {/* <Route path='*' element={<NotFound />} /> */}
+      </Routes>
     </>
   )
 }

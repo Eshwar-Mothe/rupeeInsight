@@ -6,7 +6,6 @@ const HeroSection = () => {
     return (
         <>
             <div id='home' className="container">
-
                 <div className="heroSectionContainer ">
                     <div className="leftSection">
                         <h1 >Rupee Insight-Track, Save, and Grow Your Money Smarter..!</h1>

@@ -1,0 +1,224 @@
+.avatar {
+    position: relative;
+}
+
+nav {
+    border: 5px solid rgb(2, 26, 30) !important;
+    border-style: none none solid none !important;
+}
+
+body {
+    cursor: default;
+}
+
+.navbar {
+    padding-inline: 10px;
+}
+
+.avatar .options {
+    display: none;
+    position: absolute;
+    top: 100%;
+    right: 2%;
+    background-color: white;
+    padding: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+}
+
+.avatar:hover .options {
+    display: block;
+    color: #333 !important;
+    border: 2px solid rgb(51, 51, 51);
+    border-radius: 10px;
+    padding-inline: 2rem;
+    z-index: 999;
+}
+
+.submit {
+    background-color: #333;
+    color: White;
+    font-weight: 600;
+
+    &:hover {
+        border-color: #333 !important;
+        color: #333 !important;
+    }
+}
+
+.label:hover,
+.ant-input:hover,
+.ant-input-affix-wrapper:hover,
+.ant-input-affix-wrapper-focused:hover {
+    border-color: #333 !important;
+    box-shadow: none;
+}
+
+.ant-input:focus,
+.ant-input-focused,
+.ant-input-affix-wrapper:focus,
+.ant-input-affix-wrapper-focused {
+    box-shadow: none !important;
+    border-color: #333 !important;
+}
+
+
+
+.link {
+    color: #545454 !important;
+    font-weight: 600;
+
+    &:hover {
+        color: #0800ff !important;
+    }
+}
+
+.revenue,
+.expenses,
+.debts,
+.savings {
+    color: #545454;
+    font-weight: 600;
+    margin: 10px 0;
+    padding: 10px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.2s ease-in-out;
+    transition: box-shadow 0.2s ease-in-out;
+    cursor: pointer;
+    width: 50% !important;
+    height: 20vh;
+
+    &:hover {
+        background-color: #f5f5f5;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+
+    }
+}
+
+#amount {
+    color: #202020;
+    font-size: 2rem;
+}
+
+.date-picker {
+    margin-top: 5px;
+    width: 100%;
+    padding: 10px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.2s ease-in-out;
+    cursor: pointer;
+
+    &:hover {
+        background-color: #f5f5f5;
+        border-color: #202020;
+        box-shadow: none;
+    }
+
+    &:focus {
+        border-color: #202020 !important;
+        box-shadow: none;
+    }
+
+    &:active {
+        border-color: #202020 !important;
+        box-shadow: none;
+    }
+}
+
+.chartContainer , .expensesContainer, .reminders{
+    width: 50%;
+    height: 70vh;
+    border: 2px solid #838383;
+    border-radius: 15px;
+    padding: 1rem;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.2s ease-in-out;
+    /* cursor: pointer; */
+    
+}
+
+.segment{
+    border: 2px solid #6e6d6d;
+    color: #202020;
+    border-radius: 10px;
+    padding-block: .1rem;
+}
+
+.filter select,.filter button, .actionButtons button{
+    border: 2px solid #6e6d6d;
+    border-radius: 10px;
+    padding: 5px;
+    
+}
+
+.filter button, .actionButtons button{
+    color: #333;
+    background-color: white;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s ease-in-out;
+    transition: color 0.2s ease-in-out;
+    padding-inline: 1.5rem;
+
+    &:hover{
+        background-color: #333;
+        color: white;
+    }
+}
+
+
+.infoContainer > div:nth-child(even) .infoLine {
+    color: green;
+    font-weight: 600;
+    font-size: 1rem;
+}
+
+.infoContainer>div:nth-child(odd) .infoLine {
+    color: red;
+    font-weight: 600;
+    font-size: 1rem;
+}
+
+.transactions>div, .reminder{
+    border: 2px solid #c6c6c6;
+    border-style: none none solid none;
+    
+}
+
+.transType *{
+    margin-top: -1rem;
+    font-size: 1.5rem;
+}
+
+.debit{
+    color: red;
+    font-weight: 600;
+    font-size: 1rem;
+}
+
+.credit{
+    color: green;
+    font-weight: 600;
+    font-size: 1rem;
+}
+
+.trans{
+    color: #696969;
+}
+
+.reminders{
+    width: 100%;
+}
+
+.reminderDetails h6{
+    margin: 0;
+}
+
+.reminderDetails #reminderDuration,.reminderDetails #price {
+    background-color: #333;
+    padding: 0.3rem 1rem;
+    color: white;
+    border-radius: 10px;
+}

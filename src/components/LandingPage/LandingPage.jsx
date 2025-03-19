@@ -6,7 +6,6 @@ import StatsSection from './StatsSection'
 import SlideSection from './SlideSection'
 import Features from './Features'
 import ImageSection from './imageSection'
-import SecuritySection from './SecuritySection'
 
 const LandingPage = () => {
     return (
@@ -20,8 +19,6 @@ const LandingPage = () => {
                 <SlideSection />
                 <Features />
                 <ImageSection />
-                <SecuritySection />
-                This is main section
             </main>
             <footer>
                 <Footer/>

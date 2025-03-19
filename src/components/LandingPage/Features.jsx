@@ -1,4 +1,5 @@
 import React from 'react'
+import ExploreButton from '../Common/ExploreButton';
 
 const Features = () => {
 
@@ -14,21 +15,26 @@ const Features = () => {
 
                 <h1>Why RupeeInsight</h1>
                 <div className="container d-flex p-2 justify-content-around align-items-stretch gap-5">
-            <div className='feature-image'>
-                <img src="man_think.png" alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-            </div>
-            <div className="card-section">
-                {cardsData.map((card, index) => (
-                    <div key={index} className={`card card${index + 1} text-center`}>
-                        <img src={card.image} alt="featureImage" className="card-image-top" />
-                        <div className="card-body">
-                            <p>{card.content}</p>
-                        <button className="explore  w-50 btn btn-light ">Explore More &rarr;</button>
-                        </div>
+                    <div className='feature-image'>
+                        <img src="man_think.png" alt="" style={{ width: '100%',height:'100%', objectFit: 'cover' }} />
                     </div>
-                ))}
-            </div>
-        </div>
+                    <div className="card-section">
+                        {cardsData.map((card, index) => (
+                            <div key={index} className={`card card${index + 1} text-center position-relative overflow-hidden`} style={{ width: "100%" }}>
+                                <img
+                                    src={card.image}
+                                    alt="featureImage"
+                                    className="card-image-top"
+                                    
+                                />
+                                <div className="card-body overlay">
+                                    <p className="card-content">{card.content}</p>
+                                    <ExploreButton />
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </div>
             </div>
         </>
     )

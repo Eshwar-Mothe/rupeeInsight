@@ -1,23 +1,26 @@
 import React from 'react'
+import ExploreButton from '../Common/ExploreButton'
 
 const ImageSection = () => {
-  return (
-    <>
-            <h3 className='text-center my-5'>Tax Calculation</h3>
-        <div id='taxCal' className="imageContainer container text-center">
-            <div className="leftSection">
-                <p className="content">
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Eum dolor reiciendis enim rerum odit necessitatibus odio accusantium delectus quam amet sunt non deleniti praesentium distinctio illo obcaecati ullam, provident vero.
-                    Et omnis atque, eaque, eius rerum, nihil assumenda maxime cumque dolore fuga soluta vitae delectus? Doloremque veniam minima minus atque quidem, laboriosam natus, eos sint accusamus quod eaque cupiditate autem!
-                    Vitae quasi magnam distinctio soluta similique quis doloremque repellendus error, doloribus impedit pariatur eius quam beatae. Pariatur sunt ipsam ducimus incidunt illo placeat optio laborum quibusdam odio? Placeat, alias vel?
-                </p>
+    return (
+        <>
+            <div id='taxCal' className="imageContainer container text-center">
+                <div className="leftSection">
+                        <h3 className='text-center '>Tax Calculation</h3>
+                    <p className="content">
+                        Tax calculation is an essential financial process that determines the amount of tax an individual or business owes based on income, expenses, and deductions. Various factors influence tax liabilities, including salary, investments, capital gains, and applicable exemptions. Governments impose different tax brackets, where higher earnings are taxed at progressively increasing rates.
+                        Deductions such as medical expenses, retirement contributions, and home loan interest can reduce taxable income, lowering the overall tax burden. Businesses calculate taxes based on revenue, deducting operating costs, depreciation, and other eligible expenses. Proper tax planning ensures compliance while optimizing savings.
+                        Understanding tax credits, rebates, and penalties is crucial to avoid overpayment or legal consequences. Efficient tax management involves maintaining accurate records, filing returns on time, and leveraging expert advice when necessary. Whether for individuals or businesses, precise tax calculation ensures financial stability and regulatory adherence.
+                    </p>
+                    <ExploreButton />
+                </div>
+
+                <div className="rightSection">
+                    <img src="business.png" alt="" style={{ width: '100%', objectFit: 'contain' }} />
+                </div>
             </div>
-            <div className="rightSection">
-                <img src="business.png" alt=""  style={{ width:'100%',height: '70vh', objectFit:'contain' }}/>
-            </div>
-        </div>
-    </>
-  )
+        </>
+    )
 }
 
 export default ImageSection
