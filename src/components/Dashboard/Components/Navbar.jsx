@@ -1,9 +1,14 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { UserOutlined } from '@ant-design/icons';
 import { Avatar, Space } from 'antd';
 import { Link } from 'react-router-dom';
 
 const Navbar = ({ onNavClick }) => {
+
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, [location.pathname]);
+
     return (
         <>
             <nav className="navbar navbar-expand-lg navbar-dark bg-dark d-flex sticky-top">

@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import { Layout } from 'antd';
-import '../Dashboard/dashboardStyles.css';
-import Navbar from './Components/Navbar';
-import LoadingBorder from './Loadingbar';
-import InfoContainer from './Components/InfoContainer';
+import '../../dashboardStyles.css';
+import Navbar from '../Navbar';
+import LoadingBorder from '../../Loadingbar';
+import InfoContainer from './InfoContainer';
 import { DatePicker, Space } from 'antd';
-import Expenses from './Components/ExpensesContainer';
-import ChartContainer from './Components/ChartContainer';
-import Reminders from './Components/Reminders';
+import ChartContainer from './ChartContainer';
+import ExpensesContainer from './ExpensesContainer';
+import Reminders from './Reminders';
 
 const { Content } = Layout;
 const { RangePicker } = DatePicker;
@@ -68,7 +68,7 @@ const Home = () => {
         <Layout>
           <Content className='d-flex justify-content-between gap-5 p-5 bg-light'>
             <ChartContainer />
-            <Expenses />
+            <ExpensesContainer />
           </Content>
         </Layout>
         <Layout>
@@ -76,7 +76,7 @@ const Home = () => {
             <Reminders />
           </Content>
         </Layout>
-        
+
       </Layout>
     </>
   );

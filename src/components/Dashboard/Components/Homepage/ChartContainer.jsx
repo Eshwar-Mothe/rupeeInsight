@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Segmented } from "antd";
-import ChartComponent from "./ChartComponent";
+import ChartComponent from "../Expenses/ChartComponent";
 
 const segment1Options = ["Expense", "Savings", "Debts"];
 const segment2Options = ["Yearly", "Monthly", "Weekly"];
@@ -23,7 +23,7 @@ const ChartContainer = () => {
                 </div>
             </header>
 
-            <div style={{ paddingInline: 10,paddingBlock: 10  }}>
+            <div style={{ paddingInline: 10, paddingBlock: 10 }}>
                 <ChartComponent selectedSegment1={selectedSegment1} selectedSegment2={selectedSegment2} />
             </div>
         </div>
