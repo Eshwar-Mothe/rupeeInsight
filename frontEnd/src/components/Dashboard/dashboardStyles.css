@@ -1,0 +1,379 @@
+.avatar {
+    position: relative;
+}
+
+nav {
+    border: 5px solid rgb(2, 26, 30) !important;
+    border-style: none none solid none !important;
+}
+
+body {
+    cursor: default;
+}
+
+.navbar {
+    padding-inline: 10px;
+}
+
+.avatar .options {
+    display: none;
+    position: absolute;
+    top: 100%;
+    right: 2%;
+    background-color: white;
+    padding: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+}
+
+.avatar:hover .options {
+    display: block;
+    color: #333 !important;
+    border: 2px solid rgb(51, 51, 51);
+    border-radius: 10px;
+    padding-inline: 2rem;
+    z-index: 999;
+}
+
+.submit {
+    background-color: #333;
+    color: White;
+    font-weight: 600;
+
+    &:hover {
+        border-color: #333 !important;
+        color: #333 !important;
+    }
+}
+
+.label:hover,
+.ant-input:hover,
+.ant-input-affix-wrapper:hover,
+.ant-input-affix-wrapper-focused:hover {
+    border-color: #333 !important;
+    box-shadow: none;
+}
+
+.ant-input:focus,
+.ant-input-focused,
+.ant-input-affix-wrapper:focus,
+.ant-input-affix-wrapper-focused {
+    box-shadow: none !important;
+    border-color: #333 !important;
+}
+
+
+
+.link {
+    color: #545454 !important;
+    font-weight: 600;
+
+    &:hover {
+        color: #0800ff !important;
+    }
+}
+
+.revenue,
+.expenses,
+.debts,
+.savings {
+    color: #545454;
+    font-weight: 600;
+    padding: 10px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.2s ease-in-out;
+    transition: box-shadow 0.2s ease-in-out;
+    cursor: pointer;
+    width: 50% !important;
+
+    &:hover {
+        background-color: #f5f5f5;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+
+    }
+}
+
+#amount {
+    color: #202020;
+    font-size: 2rem;
+}
+
+.date-picker {
+    margin-top: 5px;
+    width: 100%;
+    padding: 10px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.2s ease-in-out;
+    cursor: pointer;
+
+    &:hover {
+        background-color: #f5f5f5;
+        border-color: #202020;
+        box-shadow: none;
+    }
+
+    &:focus {
+        border-color: #202020 !important;
+        box-shadow: none;
+    }
+
+    &:active {
+        border-color: #202020 !important;
+        box-shadow: none;
+    }
+}
+
+.chartContainer,
+.expensesContainer,
+.reminders {
+    width: 50%;
+    height: 70vh;
+    border: 2px solid #838383;
+    border-radius: 15px;
+    padding: 1rem;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.2s ease-in-out;
+}
+
+.segment {
+    border: 2px solid #6e6d6d;
+    color: #202020;
+    border-radius: 10px;
+    padding-block: .1rem;
+}
+
+.filter select,
+.filter button,
+.actionButtons button,
+.antd-button {
+    border: 2px solid #6e6d6d;
+    border-radius: 10px;
+    padding: 5px;
+
+}
+
+.filter button,
+.actionButtons button,
+.antd-button {
+    color: #333;
+    background-color: white;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s ease-in-out;
+    transition: color 0.2s ease-in-out;
+    padding-inline: 1.5rem;
+
+    &:hover {
+        background-color: #333 !important;
+        color: white !important;
+        border-color: white !important;
+    }
+}
+
+
+.infoContainer>div:nth-child(even) .infoLine {
+    color: green;
+    font-weight: 600;
+    font-size: 1rem;
+}
+
+.infoContainer>div:nth-child(odd) .infoLine {
+    color: red;
+    font-weight: 600;
+    font-size: 1rem;
+}
+
+.transactions>div,
+.reminder {
+    border: 2px solid #c6c6c6;
+    border-style: none none solid none;
+
+}
+
+.transType * {
+    margin-top: -1rem;
+    font-size: 1.5rem;
+}
+
+.debit {
+    color: red;
+    font-weight: 600;
+    font-size: 1rem;
+}
+
+.credit {
+    color: green;
+    font-weight: 600;
+    font-size: 1rem;
+}
+
+.trans {
+    color: #696969;
+}
+
+.reminders {
+    width: 100%;
+}
+
+.reminderDetails h6 {
+    margin: 0;
+}
+
+.reminderDetails #reminderDuration,
+.reminderDetails #price {
+    background-color: #333;
+    padding: 0.3rem 1rem;
+    color: white;
+    border-radius: 10px;
+}
+
+.expenses-container {
+    width: 100% !important;
+}
+
+.yearly {
+    color: #000000;
+    border: 2px solid rgb(0, 0, 203);
+    border-radius: 10px;
+    padding: 5px 15px;
+    background-color: rgb(239, 239, 255);
+}
+
+.monthly {
+    color: #000000;
+    border: 2px solid rgb(203, 0, 0);
+    border-radius: 10px;
+    padding: 5px 15px;
+    background-color: rgb(255, 239, 239);
+}
+
+
+
+/* Media Quries */
+
+@media (max-width: 576px) {
+
+    .navbar #leftSection {
+        display: flex !important;
+        width: 100%;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .navbar-nav {
+        flex-direction: column !important;
+        gap: 1rem !important;
+        padding: 0 !important;
+        text-align: left;
+    }
+
+    .rightSection {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+
+    }
+
+    .currentUser {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .infoContainer {
+        flex-direction: column;
+        gap: 1rem !important;
+        align-items: center !important;
+    }
+
+    .infoContainer div {
+        width: 100% !important;
+    }
+
+    .infoContainer div header {
+        display: flex;
+        justify-content: center !important;
+        align-items: center !important;
+        justify-content: space-between !important;
+    }
+
+    .infoContainer div .section2 {
+        text-align: center;
+    }
+
+    .revenue,
+    .expenses,
+    .debts,
+    .savings {
+        margin: 0;
+        padding: 10px;
+        width: 100% !important;
+        height: auto;
+    }
+
+    .revenue header *,
+    .expenses header *,
+    .debts header *,
+    .savings header * {
+        width: 25px !important;
+        text-wrap: nowrap;
+    }
+
+    .revenue p *,
+    .expenses p *,
+    .debts p *,
+    .savings p * {
+        margin: 0 !important;
+    }
+
+    /* Chart Container Styles */
+    .layout{
+        width: 100% !important;
+        margin: 0 !important;
+    }
+
+    .chartsHolder,.remindersHolder {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 1rem;
+        padding: 10px !important;
+    }
+
+    .chartContainer,
+    .expensesContainer {
+        width: 100%;
+        height: auto;
+        flex-direction: column;
+    }
+
+    .chartContainer header {
+        flex-direction: column !important;
+        gap: 0.1rem !important;
+    }
+
+    .chartContainer header * {
+        flex-direction: column;
+    }
+
+    .chart-container{
+        width: 100% !important;
+        margin: 0 !important;
+        height: 75vh;
+        padding: 10px !important;
+    }
+    .chart-wrapper {
+        width: 65vh; 
+        height: 70dvw; 
+        transform: rotate(90deg); 
+        transform-origin: top; 
+        margin-top: 30vh;
+        padding: 0;
+    }
+}
+
+@media (max-width: 980px) {
+    
+}
