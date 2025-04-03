@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Form, Input, Button, Row, Col, DatePicker, Select, Modal, message, Upload } from 'antd';
 import { UploadOutlined } from "@ant-design/icons";
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import NavBar from '../NavBar';
 import { postEmailVerificationData, postRegisterData } from '../../../serviceLayer/api';
 
@@ -31,6 +31,7 @@ const Signup = () => {
   const [generatedOtp, setGeneratedOtp] = useState('');
   const [otp, setOtp] = useState('');
   const [messageApi, contextHolder] = message.useMessage();
+  const navigate = useNavigate()
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
@@ -46,20 +47,23 @@ const Signup = () => {
   };
 
   const handleFileChange = (info) => {
-    console.log('first')
-    if (info.file.originFileObj) {
+
+    let fileObj = info.file?.originFileObj || info.fileList[0]?.originFileObj;
+
+    if (fileObj) {
       setUserDetails(prevState => ({
-        ...prevState,
-        profileImage: info.file.originFileObj
+          ...prevState,
+          profileImage: fileObj
       }));
-      console.log("Selected File:", info.file.originFileObj);
-    }
-  };
+
+  } else {
+      console.log("No file selected or file structure incorrect");
+  }
+};
 
   const handleSignupSubmit = async () => {
     try {
-      console.log(userDetails)
-
+      
       const newOtp = Math.floor(Math.random() * 900000)
       setGeneratedOtp(newOtp);
       const payload = {
@@ -67,7 +71,6 @@ const Signup = () => {
         subject: "OTP Verification",
         text: `Your OTP for RupeeInsight is ${newOtp}`
       }
-
       const loadingMessage = messageApi.loading('Sending email verification...', 0);
 
       const response = await postEmailVerificationData(payload);
@@ -85,26 +88,22 @@ const Signup = () => {
     }
   };
 
-
   const handleOtpSubmission = async () => {
     try {
-      console.log('otp box triggered', userDetails)
-      console.log(generatedOtp, otp)
-
 
       if (parseInt(otp) === generatedOtp) {
-        console.log("sending Data")
+
         const registerResponse = await postRegisterData(userDetails);
-
-        console.log(registerResponse)
-
-        if (registerResponse.status === 200) {
+        if (registerResponse.status === 201) {
           messageApi.success("User registered successfully!");
           setIsModalVisible(false);
           setOtp("");
           setGeneratedOtp("")
           form.resetFields();
           setUserDetails({ email: "", password: "", username: "", income: "", mobile: "", gender: "", dob: "", address: "", city: "", state: "", pincode: "", jobTitle: "", debt: "", savings: "" });
+          setTimeout(() => {
+            navigate('/signin');
+          }, 2000);
         } else {
           messageApi.error(registerResponse.message);
         }
@@ -128,7 +127,7 @@ const Signup = () => {
         <div className="signup-container container d-flex align-items-center justify-content-center">
           <div className="right-section">
             <h1 className='text-center'>Sign Up</h1>
-            <Form form={form} layout="vertical" onFinish={handleSignupSubmit} autoComplete="off">
+            <Form form={form} layout="vertical" onFinish={handleSignupSubmit} autoComplete="off" encType="multipart/form-data">
               <Row gutter={16}>
                 <Col span={12}>
                   <Form.Item label="Name" name="username" rules={[{ required: true, message: 'Please enter your name' }]}>
@@ -161,8 +160,8 @@ const Signup = () => {
 
               <Form.Item label="Profile Picture" name="profileImage">
                 <Upload
-                  beforeUpload={() => false} // Prevents automatic upload
-                  onChange={handleFileChange} // Calls function to update state
+                  beforeUpload={() => false} 
+                  onChange={handleFileChange}
                   listType="picture"
                 >
                   <Button icon={<UploadOutlined />}>Upload Profile Picture</Button>

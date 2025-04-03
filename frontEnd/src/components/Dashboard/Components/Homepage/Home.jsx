@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Layout, DatePicker, Space } from 'antd';
+import { Layout, DatePicker, Space, message } from 'antd';
 import '../../dashboardStyles.css';
 import Navbar from '../Navbar';
 import LoadingBorder from '../../Loadingbar';
@@ -20,17 +20,32 @@ const Home = () => {
   const [userName, setUserName] = useState('User');
   const [selectedRange, setSelectedRange] = useState([]);
   const [userData, setUserData] = useState(null);
-  const loggedInUser = JSON.parse(localStorage.getItem('loggedInUser')) || { id: 'U67890' };
+  const [messageApi, contextHolder] = message.useMessage();
+
+
+  const loggedInUser = JSON.parse(localStorage.getItem('user'));
+  console.log("loggedInUser",loggedInUser)
+
 
   useEffect(() => {
+
+    if (!loggedInUser.email) return;
+
     const fetchUserDetails = async () => {
       setIsLoading(true);
       try {
         const data = await getDashBoardData();
-        const userDetails = data?.finance?.users?.find(user => user.id === loggedInUser.id);
+
+        const userDetails = data?.find(user => user.email === loggedInUser.email);
+        console.log("userdetails from db", userDetails)
+
         if (userDetails) {
           setUserName(userDetails.username);
           setUserData(userDetails);
+        }
+
+        if (loggedInUser && loggedInUser.username) {
+          messageApi.success(`Welcome ${loggedInUser.username}`, 3);
         }
       } catch (error) {
         console.error('Error fetching user details:', error);
@@ -39,7 +54,7 @@ const Home = () => {
       }
     };
     fetchUserDetails();
-  }, [loggedInUser.id]);
+  }, [loggedInUser._id]);
 
   const filterByDateRange = (items = []) => {
     if (!selectedRange.length) return items;
@@ -102,6 +117,7 @@ const Home = () => {
   return (
     <>
       {isLoading && <LoadingBorder />}
+      {contextHolder}
       <Layout>
         <Navbar onNavClick={() => setIsLoading(true)} />
         <Layout>

@@ -1,4 +1,4 @@
-import { postRegisterDataUrl, getDashBoardDataUrl, getDebtsDataUrl, getExpensesDataUrl, getInvestmentDataUrl, postExpensesDataUrl, postLoanDataUrl, postLoginDataUrl, postRemindersDataUrl, postEmailVerificationUrl, postVerifyOtpUrl } from './constants'
+import { postRegisterDataUrl, getDashBoardDataUrl, getDebtsDataUrl, getExpensesDataUrl, getInvestmentDataUrl, postExpensesDataUrl, postLoanDataUrl, postLoginDataUrl, postRemindersDataUrl, postEmailVerificationUrl, postVerifyOtpUrl, getReminderDataUrl } from './constants'
 // Data posting Apis
 const postRegisterData = async (payload) => {
     console.log("payload in postRegisterData", payload);
@@ -7,13 +7,14 @@ const postRegisterData = async (payload) => {
 
     Object.keys(payload).forEach((key) => {
         if (key === "profileImage" && payload[key] instanceof File) {
-            formData.append(key, payload[key]); // Append the image file
+            formData.append(key, payload[key]); 
         } else if (key !== "profileImage") {
-            formData.append(key, payload[key]); // Append other fields
+            formData.append(key, payload[key]); 
         }
     });
 
-
+    console.log("formdata in registering",formData);
+    
     try {
         const res = await fetch(postRegisterDataUrl, {
             method: "POST",
@@ -36,6 +37,8 @@ const postEmailVerificationData = async (payload) => {
     formBody.append("to", email);
     formBody.append("subject", subject);
     formBody.append("text", text);
+
+    console.log("FormBody",formBody);
 
     const res = await fetch(postEmailVerificationUrl, {
         method: "POST",
@@ -61,6 +64,7 @@ const postLoginData = async (payload) => {
 
 const postExpensesData = async (payload) => {
     try {
+        console.log("payload for the expense",payload);
         const res = await fetch(postExpensesDataUrl, {
             method: "POST",
             headers: {
@@ -80,6 +84,7 @@ const postExpensesData = async (payload) => {
 
 
 const postRemindersData = async (payload) => {
+    console.log("Sending reminders data to the backend...", payload);
     const res = await fetch(`${postRemindersDataUrl}`, {
         method: "POST",
         headers: {
@@ -101,23 +106,19 @@ const postLoanData = async (payload) => {
     return await res.json();
 }
 
-// const postEmailVerificationData = async(req, res) => {
-//     const res = await fetch(`${postEmailVerificationUrl}`, {
-//         method: "POST",
-//         headers: {
-//             "Content-Type": "application/json",
-//         },
-//         body: JSON.stringify(payload),
-//     });
-//     return await res.json();
-// }
-
-// Data Fetching Apis
 
 const getDashBoardData = async () => {
+    console.log("fetching the data for dashboard")
     const res = await fetch(`${getDashBoardDataUrl}`)
     const data = await res.json()
     console.log(data)
+    return data
+}
+
+const getRemindersData = async () =>{
+    console.log("fetching the data for reminders")
+    const res = await fetch(`${getReminderDataUrl}`)
+    const data = await res.json()
     return data
 }
 
@@ -139,4 +140,4 @@ const getInvestmentData = async () => {
     return data
 }
 
-export { postRegisterData, postLoginData, postEmailVerificationData, postExpensesData, postRemindersData, postLoanData, getDashBoardData, getDebtsData, getExpensesData }
+export { postRegisterData, postLoginData, postEmailVerificationData, postExpensesData, postRemindersData, postLoanData, getDashBoardData,getRemindersData, getDebtsData, getExpensesData }

@@ -13,33 +13,30 @@ const InfoContainer = () => {
         investments: 0
     });
 
-    // Get logged-in user data from localStorage
-    // const loggedInUser = JSON.parse(localStorage.getItem('loggedInUser'));
-    const loggedInUser = {
-        id: "U67890"
-    }
+    const loggedInUser = JSON.parse(localStorage.getItem('user'));
+    
     const handleData = async () => {
         try {
             const data = await getDashBoardData();
             if (!data || !data.finance?.users) return;
 
-            // Find the logged-in user's finance data
-            const userFinanceData = data.finance.users.find(user => user.id === loggedInUser?.id)?.financeData;
+            const userFinanceData = data.totals.find(user => user._id === loggedInUser?._id)?.totals;
+            console.log("userFinanceData",userFinanceData)
             
             if (userFinanceData) {
-                const { income, expenses, debts, investments } = userFinanceData;
+                const { totalIncome, totalExpenses, totalLoans, totalSavings } = userFinanceData;
 
-                setIncomeAmount(income.total);
-                setExpensesAmount(expenses.total);
-                setTotalDebts(debts.total);
-                setTotalInvestments(investments.total);
+                setIncomeAmount(totalIncome);
+                setExpensesAmount(totalExpenses);
+                setTotalDebts(totalLoans);
+                setTotalInvestments(totalSavings);
 
-                setPercentageChanges({
-                    income: income.percentageChange,
-                    expenses: expenses.percentageChange,
-                    debts: debts.percentageChange,
-                    investments: investments.percentageChange
-                });
+                // setPercentageChanges({
+                //     income: income.percentageChange,
+                //     expenses: expenses.percentageChange,
+                //     debts: debts.percentageChange,
+                //     investments: investments.percentageChange
+                // });
             }
         } catch (error) {
             console.error("Error fetching dashboard data:", error);

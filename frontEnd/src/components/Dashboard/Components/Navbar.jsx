@@ -6,10 +6,22 @@ import { Link, useLocation } from 'react-router-dom';
 const Navbar = ({ onNavClick }) => {
     const location = useLocation();
     const [isOpen, setIsOpen] = useState(false);
+    const [profileImage, setProfileImage] = useState()
+
+    const loggedInUser = JSON.parse(localStorage.getItem('user'))
 
     useEffect(() => {
         window.scrollTo(0, 0);
     }, [location.pathname]);
+
+    useEffect(() => {
+        if (loggedInUser) {
+            setProfileImage(loggedInUser.profileImage)
+        } else {
+            setProfileImage(null)
+        }
+    }, [loggedInUser._id])
+
 
     const handleToggle = () => {
         setIsOpen(!isOpen);
@@ -44,7 +56,7 @@ const Navbar = ({ onNavClick }) => {
 
                 <div className={`collapse navbar-collapse ${isOpen ? "show" : ""}`} id="navbarNav">
                     <div className="navLinks">
-                        
+
                     </div>
                     <ul className="navbar-nav ml-auto">
                         <li className="nav-item">
@@ -86,7 +98,11 @@ const Navbar = ({ onNavClick }) => {
                     </ul>
                     <div className="avatar">
                         <Space className='custom-avatar'>
-                            <Avatar size={32} icon={<UserOutlined />} />
+                            <Avatar
+                                size={32}
+                                src={profileImage ? profileImage : undefined}
+                                icon={!profileImage && <UserOutlined />}
+                            />
                         </Space>
 
                         <div className="options">

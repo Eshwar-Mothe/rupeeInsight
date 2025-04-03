@@ -1,107 +1,91 @@
-import React from 'react';
-import { Table, Button, Space } from 'antd';
-import { Link } from 'react-router-dom';
-
-const remindersData = [
-    {
-        key: '1',
-        sNo: '01',
-        reminderCategory: 'Subscriptions',
-        reminderTitle: 'Amazon Prime',
-        reminderDuration: 'Yearly',
-        dueDate: '10/05/2025',
-        price: '₹1600/-',
-    },
-    {
-        key: '2',
-        sNo: '02',
-        reminderCategory: 'Subscriptions',
-        reminderTitle: 'Netflix',
-        reminderDuration: 'Monthly',
-        dueDate: '21/03/2025',
-        price: '₹600/-',
-    },
-    {
-        key: '3',
-        sNo: '03',
-        reminderCategory: 'Recharge',
-        reminderTitle: 'Postpaid',
-        reminderDuration: 'Yearly',
-        dueDate: '16/05/2025',
-        price: '₹1100/-',
-    },
-    {
-        key: '4',
-        sNo: '04',
-        reminderCategory: 'Insurance',
-        reminderTitle: 'Health',
-        reminderDuration: 'Monthly',
-        dueDate: '26/12/2025',
-        price: '₹6000/-',
-    },
-    {
-        key: '5',
-        sNo: '05',
-        reminderCategory: 'Loan',
-        reminderTitle: 'Muthoot Gold Finance',
-        reminderDuration: 'Monthly',
-        dueDate: '06/06/2025',
-        price: '₹2000/-',
-    },
-];
+import React, { useEffect, useState } from "react";
+import { Table, Button, Space, Spin } from "antd";
+import { Link } from "react-router-dom";
+import { getRemindersData } from "../../../../serviceLayer/api";
+import { format } from "date-fns"; 
 
 const Reminders = () => {
+    const loggedInUser = JSON.parse(localStorage.getItem("user"));
+    const [remindersData, setRemindersData] = useState([]);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        const fetchRemindersData = async () => {
+            try {
+                console.log("reminders", loggedInUser.reminders);
+                
+                const formattedData = loggedInUser.reminders.map((item, index) => ({
+                    ...item,
+                    key: item._id || index.toString(),
+                    sNo: index + 1,
+                    reminderDueDate: item.reminderDueDate
+                        ? format(new Date(item.reminderDueDate), "dd MMM yyyy") // Formatting Date
+                        : "N/A",
+                }));
+
+                setRemindersData(formattedData);
+            } catch (error) {
+                console.error("Error fetching reminders data:", error);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        if (loggedInUser?.email) {
+            fetchRemindersData();
+        }
+    }, [loggedInUser.email]);
+
     const columns = [
         {
-            title: 'S.No',
-            dataIndex: 'sNo',
-            key: 'sNo',
+            title: "S.No",
+            dataIndex: "sNo",
+            key: "sNo",
         },
         {
-            title: 'Category',
-            dataIndex: 'reminderCategory',
-            key: 'reminderCategory',
-            className: 'text-center',
+            title: "Category",
+            dataIndex: "reminderCategory",
+            key: "reminderCategory",
+            className: "text-center",
         },
         {
-            title: 'Title',
-            dataIndex: 'reminderTitle',
-            key: 'reminderTitle',
-            className: 'text-center',
-
+            title: "Title",
+            dataIndex: "reminderTitle",
+            key: "reminderTitle",
+            className: "text-center",
         },
         {
-            title: 'Duration',
-            dataIndex: 'reminderDuration',
-            key: 'reminderDuration',
-            className: 'text-center',
+            title: "Duration",
+            dataIndex: "reminderDuration",
+            key: "reminderDuration",
+            className: "text-center",
             render: (text) => (
-                <span className={text === 'Yearly' ? 'yearly' : text === 'Monthly' ? 'monthly' : ''}>
+                <span className={text === "Yearly" ? "yearly" : text === "Monthly" ? "monthly" : ""}>
                     {text}
                 </span>
-            )
+            ),
         },
         {
-            title: 'Due Date',
-            dataIndex: 'dueDate',
-            key: 'dueDate',
-            className: 'text-center',
+            title: "Due Date",
+            dataIndex: "reminderDueDate",
+            key: "reminderDueDate",
+            className: "text-center",
         },
         {
-            title: 'Amount (₹)',
-            dataIndex: 'price',
-            key: 'price',
-            className: 'text-center',
+            title: "Amount (₹)",
+            dataIndex: "amount",
+            key: "amount",
+            className: "text-center",
         },
         {
-            title: 'Actions',
-            key: 'actions',
-            className: 'text-center',
+            title: "Actions",
+            key: "actions",
+            className: "text-center",
             render: (_, record) => (
                 <Space size="middle">
-                    <Button className='antd-button'>Payment Done</Button>
-                    <Button className='antd-button'>Snooze</Button>
-                    <Button className='antd-button'>Edit</Button>
+                    <Button className="antd-button">Payment Done</Button>
+                    <Button className="antd-button">Snooze</Button>
+                    <Button className="antd-button">Edit</Button>
                     <Button danger>Delete</Button>
                 </Space>
             ),
@@ -117,12 +101,18 @@ const Reminders = () => {
                 </Link>
             </header>
 
-            <Table
-                columns={columns}
-                dataSource={remindersData}
-                pagination={{ pageSize: 5 }}
-                scroll={{ x: "max-content" }}
-            />
+            {loading ? (
+                <div className="text-center">
+                    <Spin size="large" />
+                </div>
+            ) : (
+                <Table
+                    columns={columns}
+                    dataSource={remindersData}
+                    pagination={{ pageSize: 5 }}
+                    scroll={{ x: "max-content" }}
+                />
+            )}
         </div>
     );
 };

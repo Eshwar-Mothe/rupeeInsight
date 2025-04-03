@@ -5,10 +5,10 @@ import { postRemindersData } from '../../../../serviceLayer/api';
 
 const dataSource = Array.from({ length: 2 }).map((_, i) => ({
   key: i,
-  transactionName: 'Subscription',
-  reminder_title: 'Amazon',
-  reminder_duration: 'Yearly',
-  reminder_dueDate: '10/05/2025',
+  reminderCategory: 'Subscription',
+  reminderTitle: 'Amazon',
+  reminderDuration: 'Yearly',
+  reminderDueDate: '10/05/2025',
   amount: '₹1600',
 }));
 
@@ -20,6 +20,8 @@ const TableComponent = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [form] = Form.useForm();
 
+  const loggedInUser = JSON.parse(localStorage.getItem('user'))
+
   const handleNewReminder = () => {
     setIsModalOpen(true);
   }
@@ -29,16 +31,17 @@ const TableComponent = () => {
       .validateFields()
       .then((values) => {
         const newReminder = {
-          key: reminders.length + 1,
+          userId: loggedInUser._id,
+          reminderCategory: values.reminderCategory,
+          reminderTitle: values.reminderTitle,
+          reminderDuration: values.reminderDuration,
+          reminderDueDate: values.reminderDueDate.format("DD/MM/YYYY"),
+          amount: values.amount,
           type: 'reminder',
-          transactionName: values.transactionName,
-          reminder_title: values.reminderTitle,
-          reminder_duration: values.reminderDuration,
-          reminder_dueDate: values.reminderDueDate.format("DD/MM/YYYY"),
-          amount: `₹${values.amount}`,
           isCompleted: false,
           isSnoozed: false,
           isDeleted: false,
+          key: reminders.length + 1,
         };
 
         setReminders([...reminders, newReminder]);
@@ -53,13 +56,13 @@ const TableComponent = () => {
 
   const columns = [
     
-    { title: "Reminder", dataIndex: "transactionName", key: "transactionName", className: 'text-center',},
+    { title: "Reminder", dataIndex: "reminderCategory", key: "reminderCategory", className: 'text-center',},
     
-    { title: "Title", dataIndex: "reminder_title", key: "reminder_title", className: 'text-center',},
+    { title: "Title", dataIndex: "reminderTitle", key: "reminderTitle", className: 'text-center',},
     
-    { title: "Duration", dataIndex: "reminder_duration", key: "reminder_duration", className: 'text-center',},
+    { title: "Duration", dataIndex: "reminderDuration", key: "reminderDuration", className: 'text-center',},
     
-    { title: "Due Date", dataIndex: "reminder_dueDate", key: "reminder_dueDate", className: 'text-center',},
+    { title: "Due Date", dataIndex: "reminderDueDate", key: "reminderDueDate", className: 'text-center',},
     
     { title: "Amount (₹)", dataIndex: "amount", key: "amount", className: 'text-center',},
     {
@@ -115,11 +118,12 @@ const TableComponent = () => {
         >
           <Form form={form} layout="vertical">
             <Form.Item
-              label="Transaction Name"
-              name="transactionName"
-              rules={[{ required: true, message: "Enter transaction name" }]}
+              label="reminderCategory"
+              name="reminderCategory"
+              rules={[{ required: true, message: "Enter Reminder Category" }]}
+              
             >
-              <Input placeholder="e.g., Subscription, Rent, Loan Payment" />
+              <Input placeholder="e.g., Subscription, Rent, Loan Payment"/>
             </Form.Item>
 
             <Form.Item

@@ -1,33 +1,37 @@
 import React, { useState, useEffect } from 'react';
-import { Form, Input, Button } from 'antd';
+import { Form, Input, Button, message } from 'antd';
 import NavBar from '../NavBar';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { postLoginData } from '../../../serviceLayer/api';
 
 const Login = () => {
+  const [messageApi, contextHolder] = message.useMessage();
+    const navigate = useNavigate()
+
   const onFinish = async (values) => {
     const payload = {
-        email: values.email,
-        password: values.password
+      email: values.email,
+      password: values.password
     };
-
     try {
-        const response = await postLoginData(payload);
+      const response = await postLoginData(payload);
 
-        const isTokenExist = response.token ? true : false;
-        if (response.status === 200) {
-            console.log("Login Successful:", response.data);
-            localStorage.setItem("token", isTokenExist); 
-            localStorage.setItem("user", JSON.stringify(response.data));
-            message.success("Login successful!"); 
-        } else {
-            message.error(response.data.message || "Login failed. Please try again.");
-        }
+      const isTokenExist = response.token ? true : false;
+      if (response.status === 200) {
+        localStorage.setItem("token", isTokenExist);
+        localStorage.setItem("user", JSON.stringify(response.data));
+        messageApi.success("Login successful!");
+        setTimeout(() => {
+          navigate('/home');
+        }, 2000);
+        
+      } else {
+        messageApi.error(response?.data?.message || "Login failed. Please try again.");
+      }
     } catch (error) {
-        console.error("Error during login:", error);
-        message.error("An error occurred. Please check your credentials.");
+      messageApi.error("An error occurred. Please check your credentials.");
     }
-};
+  };
 
 
   const onFinishFailed = (errorInfo) => {
@@ -45,6 +49,7 @@ const Login = () => {
 
   return (
     <>
+      {contextHolder}
       <NavBar />
       <div style={{ maxWidth: '300px', margin: '0 auto', padding: '50px 0' }}>
         <h3 style={{ textAlign: 'center' }}>Sign In</h3>
@@ -57,7 +62,7 @@ const Login = () => {
         >
           <Form.Item
             name="email"
-            rules={[{ required: true, message: 'Please input your Email or Mobile!' }]}
+            rules={[{ required: true, message: 'Please enter your email' }]}
           >
             <Input placeholder="Email/Mobile" className={`label ${theme === "light" ? "label-light" : "label-dark"}`} />
           </Form.Item>
