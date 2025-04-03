@@ -329,12 +329,13 @@ body {
     }
 
     /* Chart Container Styles */
-    .layout{
+    .layout {
         width: 100% !important;
         margin: 0 !important;
     }
 
-    .chartsHolder,.remindersHolder {
+    .chartsHolder,
+    .remindersHolder {
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -358,22 +359,21 @@ body {
         flex-direction: column;
     }
 
-    .chart-container{
+    .chart-container {
         width: 100% !important;
         margin: 0 !important;
         height: 75vh;
         padding: 10px !important;
     }
+
     .chart-wrapper {
-        width: 65vh; 
-        height: 70dvw; 
-        transform: rotate(90deg); 
-        transform-origin: top; 
+        width: 65vh;
+        height: 70dvw;
+        transform: rotate(90deg);
+        transform-origin: top;
         margin-top: 30vh;
         padding: 0;
     }
 }
 
-@media (max-width: 980px) {
-    
-}
+@media (max-width: 980px) {}
