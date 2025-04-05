@@ -1,6 +1,6 @@
 const port = 5000;
-// const baseUrl = `https://rupeeinsightbackend.onrender.com`;
-const baseUrl = `http://localhost:5000`;
+const baseUrl = `https://rupeeinsightbackend.onrender.com`;
+// const baseUrl = `http://localhost:5000`;
 
 // User-related endpoints
 const postRegisterDataUrl = `${baseUrl}/signup`;
@@ -21,17 +21,26 @@ const getExpensesDataUrl = `${baseUrl}/expenses`;
 const getDebtsDataUrl = `${baseUrl}/debts`;
 const getInvestmentDataUrl = `${baseUrl}/investments`;
 
-export { 
-    postRegisterDataUrl, 
-    postEmailVerificationUrl, 
-    postVerifyOtpUrl, 
-    postLoginDataUrl, 
-    postExpensesDataUrl, 
-    postRemindersDataUrl, 
-    postLoanDataUrl, 
-    getDashBoardDataUrl, 
-    getExpensesDataUrl, 
-    getDebtsDataUrl, 
+
+//Put Requests
+const updatePaymentStatusUrl = `${baseUrl}/updatePayment`
+const updateSnoozeStatusUrl = `${baseUrl}/updateSnooze`
+const updateReminderUrl = `${baseUrl}/updateReminder`
+
+export {
+    postRegisterDataUrl,
+    postEmailVerificationUrl,
+    postVerifyOtpUrl,
+    postLoginDataUrl,
+    postExpensesDataUrl,
+    postRemindersDataUrl,
+    postLoanDataUrl,
+    getDashBoardDataUrl,
+    getExpensesDataUrl,
+    getDebtsDataUrl,
     getInvestmentDataUrl,
-    getReminderDataUrl
+    getReminderDataUrl,
+    updatePaymentStatusUrl,
+    updateSnoozeStatusUrl,
+    updateReminderUrl,
 };

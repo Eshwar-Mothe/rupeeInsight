@@ -1,4 +1,4 @@
-import { postRegisterDataUrl, getDashBoardDataUrl, getDebtsDataUrl, getExpensesDataUrl, getInvestmentDataUrl, postExpensesDataUrl, postLoanDataUrl, postLoginDataUrl, postRemindersDataUrl, postEmailVerificationUrl, postVerifyOtpUrl, getReminderDataUrl } from './constants'
+import { postRegisterDataUrl, getDashBoardDataUrl, getDebtsDataUrl, getExpensesDataUrl, getInvestmentDataUrl, postExpensesDataUrl, postLoanDataUrl, postLoginDataUrl, postRemindersDataUrl, postEmailVerificationUrl, getReminderDataUrl, updatePaymentStatusUrl, updateReminderUrl, updateSnoozeStatusUrl } from './constants'
 // Data posting Apis
 const postRegisterData = async (payload) => {
     console.log("payload in postRegisterData", payload);
@@ -7,14 +7,14 @@ const postRegisterData = async (payload) => {
 
     Object.keys(payload).forEach((key) => {
         if (key === "profileImage" && payload[key] instanceof File) {
-            formData.append(key, payload[key]); 
+            formData.append(key, payload[key]);
         } else if (key !== "profileImage") {
-            formData.append(key, payload[key]); 
+            formData.append(key, payload[key]);
         }
     });
 
-    console.log("formdata in registering",formData);
-    
+    console.log("formdata in registering", formData);
+
     try {
         const res = await fetch(postRegisterDataUrl, {
             method: "POST",
@@ -33,12 +33,12 @@ const postEmailVerificationData = async (payload) => {
 
     const { email, subject, text } = payload;
 
-    const formBody = new URLSearchParams(); 
+    const formBody = new URLSearchParams();
     formBody.append("to", email);
     formBody.append("subject", subject);
     formBody.append("text", text);
 
-    console.log("FormBody",formBody);
+    console.log("FormBody", formBody);
 
     const res = await fetch(postEmailVerificationUrl, {
         method: "POST",
@@ -64,7 +64,7 @@ const postLoginData = async (payload) => {
 
 const postExpensesData = async (payload) => {
     try {
-        console.log("payload for the expense",payload);
+        console.log("payload for the expense", payload);
         const res = await fetch(postExpensesDataUrl, {
             method: "POST",
             headers: {
@@ -72,9 +72,7 @@ const postExpensesData = async (payload) => {
             },
             body: JSON.stringify(payload),
         });
-        if (!res.ok) {
-            throw new Error(`Failed to post expense: ${res.status} ${res.statusText}`);
-        }
+        
         return await res.json("Expense Details Added");
     } catch (error) {
         console.error("Error posting expense data:", error);
@@ -111,11 +109,11 @@ const getDashBoardData = async () => {
     console.log("fetching the data for dashboard")
     const res = await fetch(`${getDashBoardDataUrl}`)
     const data = await res.json()
-    console.log(data)
+    // console.log("fetched Data",data)
     return data
 }
 
-const getRemindersData = async () =>{
+const getRemindersData = async () => {
     console.log("fetching the data for reminders")
     const res = await fetch(`${getReminderDataUrl}`)
     const data = await res.json()
@@ -140,4 +138,36 @@ const getInvestmentData = async () => {
     return data
 }
 
-export { postRegisterData, postLoginData, postEmailVerificationData, postExpensesData, postRemindersData, postLoanData, getDashBoardData,getRemindersData, getDebtsData, getExpensesData }
+const updatePaymentStatusData = async (payload) => {
+    console.log('Making api call for update payment Status')
+    const res = await fetch(`${updatePaymentStatusUrl}`, {
+        method: "PUT",
+        body: payload
+    })
+}
+
+const updateSnoozeStatusData = async (payload) => {
+    console.log('Making api call for update payment Status')
+    const res = await fetch(`${updatePaymentStatusUrl}`, {
+        method: "PUT",
+        body: payload
+    })
+}
+
+const updateReminderData = async (payload) => {
+    console.log('Making api call for update Reminder')
+    const res = await fetch(`${updateReminderUrl}`, {
+        method: "PUT",
+        body: payload
+    })
+}
+
+const deleteReminder = async (payload) => {
+    console.log('Making api call for update Reminder')
+    const res = await fetch(`${updateReminderUrl}`, {
+        method: "DELETE",
+        body: payload
+    })
+}
+
+export { postRegisterData, postLoginData, postEmailVerificationData, postExpensesData, postRemindersData, postLoanData, getDashBoardData, getRemindersData, getDebtsData, getExpensesData, updatePaymentStatusData,updateReminderData,updateSnoozeStatusData,deleteReminder }

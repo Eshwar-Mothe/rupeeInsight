@@ -14,7 +14,10 @@ const Login = () => {
       password: values.password
     };
     try {
+      const loadingMessage = messageApi.loading('Checking Credentials...Please Wait', 0);
+      // const response = await postEmailVerificationData(payload);
       const response = await postLoginData(payload);
+      loadingMessage();
 
       const isTokenExist = response.token ? true : false;
       if (response.status === 200) {
@@ -23,7 +26,7 @@ const Login = () => {
         messageApi.success("Login successful!");
         setTimeout(() => {
           navigate('/home');
-        }, 2000);
+        }, 1000);
         
       } else {
         messageApi.error(response?.data?.message || "Login failed. Please try again.");

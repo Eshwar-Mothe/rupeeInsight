@@ -32,7 +32,7 @@ const Expenses = () => {
                         <div className="section1">
                             <h4>Overview</h4>
                         </div>
-                        <div className="section2 d-flex align-items-center gap-2">
+                        <div className="section2 d-flex align-items-center gap-2 filter">
                             <h6 className='my-1'>Filter:</h6>
                             <Select
                                 placeholder="Select Month"
@@ -45,9 +45,10 @@ const Expenses = () => {
                                     </Select.Option>
                                 ))}
                             </Select>
+                            {/* <button>Search</button> */}
                         </div>
                     </header>
-                    <Content className='text-center doughnutChart d-flex gap-4 align-items-center justify-content-center flex-wrap my-2 bg-light'>
+                    <Content className='text-center d-flex gap-4 align-items-center justify-content-evenly flex-wrap my-2 bg-light'>
                         <DoughnutChart title="Home Needs" labels={["Groceries", "Rent", "Furniture", "Utilities", "Maintenance"]} />
                         <RadarChart title="Health" labels={["Doctor Visits", "Medicines", "Insurance", "Gym", "Therapy"]} />
                         <BarChart title="Travel" labels={["Flights", "Hotels", "Transport", "Food", "Activities"]} />
@@ -56,7 +57,7 @@ const Expenses = () => {
                 </Layout>
 
                 <Layout>
-                    <Content className='my-5 w-100'>
+                    <Content className='my-5 w-100' >
                         <ExpensesTable />
                     </Content>
                 </Layout>

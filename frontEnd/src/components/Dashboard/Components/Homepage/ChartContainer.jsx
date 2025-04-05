@@ -9,6 +9,9 @@ const ChartContainer = () => {
     // State to track selected filters
     const [selectedSegment1, setSelectedSegment1] = useState("Expense");
     const [selectedSegment2, setSelectedSegment2] = useState("Yearly");
+    const loggedInUser = JSON.parse(localStorage.getItem('user'))
+    const userId = loggedInUser._id
+    const registeredYear = loggedInUser.createdAt.split("-")[0]
 
     return (
         <div className="chartContainer">
@@ -24,7 +27,7 @@ const ChartContainer = () => {
             </header>
 
             <div style={{ paddingInline: 10, paddingBlock: 10 }}>
-                <ChartComponent selectedSegment1={selectedSegment1} selectedSegment2={selectedSegment2} registrationYear = {2022}/>
+                <ChartComponent selectedSegment1={selectedSegment1} selectedSegment2={selectedSegment2} registrationYear = {registeredYear} user = {loggedInUser}/>
             </div>
         </div>
     );

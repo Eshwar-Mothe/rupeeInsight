@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { getDashBoardData } from '../../../../serviceLayer/api'
+import dayjs from 'dayjs';
 
 const InfoContainer = () => {
     const [incomeAmount, setIncomeAmount] = useState(0);
@@ -14,15 +14,36 @@ const InfoContainer = () => {
     });
 
     const loggedInUser = JSON.parse(localStorage.getItem('user'));
-    
+
+    const calculatePercentageChange = (items) => {
+        const monthlyTotals = {};
+
+        console.log("items",items)
+        items.forEach(item => {
+            const month = dayjs(item.date).format("YYYY-MM");
+            monthlyTotals[month] = (monthlyTotals[month] || 0) + item.amount;
+        });
+
+        const months = Object.keys(monthlyTotals).sort();
+
+        if (months.length < 2) return 0;
+
+        const prevMonth = monthlyTotals[months[months.length - 2]];
+        const currentMonth = monthlyTotals[months[months.length - 1]];
+
+        if (prevMonth === 0) return 100;
+
+        const diff = currentMonth - prevMonth;
+        const percentage = (diff / prevMonth) * 100;
+        return parseFloat(percentage.toFixed(2));
+    };
+
     const handleData = async () => {
         try {
-            const data = await getDashBoardData();
-            if (!data || !data.finance?.users) return;
+            if (!loggedInUser || !loggedInUser.totals) return;
 
-            const userFinanceData = data.totals.find(user => user._id === loggedInUser?._id)?.totals;
-            console.log("userFinanceData",userFinanceData)
-            
+            const userFinanceData = loggedInUser.totals;
+
             if (userFinanceData) {
                 const { totalIncome, totalExpenses, totalLoans, totalSavings } = userFinanceData;
 
@@ -31,12 +52,17 @@ const InfoContainer = () => {
                 setTotalDebts(totalLoans);
                 setTotalInvestments(totalSavings);
 
-                // setPercentageChanges({
-                //     income: income.percentageChange,
-                //     expenses: expenses.percentageChange,
-                //     debts: debts.percentageChange,
-                //     investments: investments.percentageChange
-                // });
+                const income =      loggedInUser.income || [];
+                const expenses =    loggedInUser.expenses || [];
+                const debts =       loggedInUser.debts || [];
+                const investments = loggedInUser.investments || [];
+
+                setPercentageChanges({
+                    income: calculatePercentageChange(income),
+                    expenses: calculatePercentageChange(expenses),
+                    debts: calculatePercentageChange(debts),
+                    investments: calculatePercentageChange(investments)
+                });
             }
         } catch (error) {
             console.error("Error fetching dashboard data:", error);
@@ -44,10 +70,10 @@ const InfoContainer = () => {
     };
 
     useEffect(() => {
-        if (loggedInUser?.id) {
+        if (loggedInUser?._id) {
             handleData();
         }
-    }, [loggedInUser?.id]); // Dependency to re-fetch when the user ID changes
+    }, [loggedInUser?.id]);
 
     return (
         <>
@@ -62,7 +88,7 @@ const InfoContainer = () => {
                     </header>
                     <p id='amount'>&#8377;<span>{incomeAmount}</span></p>
                     <p id="change" className='infoLine' >
-                        <span id='percentage'>{percentageChanges.income}%</span>
+                        <span id='percentage'>{Math.abs(percentageChanges.income)}%</span>
                         <span className='arrow'>{percentageChanges.income >= 0 ? '↑' : '↓'}</span> from last month
                     </p>
                 </div>
@@ -74,7 +100,7 @@ const InfoContainer = () => {
                     </header>
                     <p id='amount'>&#8377;<span>{expensesAmount}</span></p>
                     <p id="change" className='infoLine' >
-                        <span id='percentage'>{percentageChanges.expenses}%</span>
+                        <span id='percentage'>{Math.abs(percentageChanges.expenses)}%</span>
                         <span className='arrow'>{percentageChanges.expenses >= 0 ? '↑' : '↓'}</span> from last month
                     </p>
                 </div>
@@ -86,7 +112,7 @@ const InfoContainer = () => {
                     </header>
                     <p id='amount'>&#8377;<span>{totalDebts}</span></p>
                     <p id="change" className='infoLine' >
-                        <span id='percentage'>{percentageChanges.debts}%</span>
+                        <span id='percentage'>{Math.abs(percentageChanges.debts)}%</span>
                         <span className='arrow'>{percentageChanges.debts >= 0 ? '↑' : '↓'}</span> from last month
                     </p>
                 </div>
@@ -98,7 +124,7 @@ const InfoContainer = () => {
                     </header>
                     <p id='amount'>&#8377;<span>{totalInvestments}</span></p>
                     <p id="change" className='infoLine' >
-                        <span id='percentage'>{percentageChanges.investments}%</span>
+                        <span id='percentage'>{Math.abs(percentageChanges.investments)}%</span>
                         <span className='arrow'>{percentageChanges.investments >= 0 ? '↑' : '↓'}</span> from last month
                     </p>
                 </div>

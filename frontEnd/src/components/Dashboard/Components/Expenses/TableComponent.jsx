@@ -1,80 +1,138 @@
-import React, { useState } from 'react';
-import { Space, Table, Button, Modal, Form, Input, Select, DatePicker } from 'antd';
+import React, { useEffect, useState } from 'react';
+import { Space, Table, Button, Modal, Form, Input, Select, DatePicker, message } from 'antd';
 import { postRemindersData } from '../../../../serviceLayer/api';
-
-
-const dataSource = Array.from({ length: 2 }).map((_, i) => ({
-  key: i,
-  reminderCategory: 'Subscription',
-  reminderTitle: 'Amazon',
-  reminderDuration: 'Yearly',
-  reminderDueDate: '10/05/2025',
-  amount: '₹1600',
-}));
+import dayjs from 'dayjs';
+const { Option } = Select;
 
 const TableComponent = () => {
-
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(5);
-  const [reminders, setReminders] = useState(dataSource);
+  const [reminders, setReminders] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [form] = Form.useForm();
+  const [messageApi, contextHolder] = message.useMessage();
 
-  const loggedInUser = JSON.parse(localStorage.getItem('user'))
+  const loggedInUser = JSON.parse(localStorage.getItem('user'));
 
-  const handleNewReminder = () => {
-    setIsModalOpen(true);
-  }
+  const months = [
+    "January", "February", "March", "April", "May", "June",
+    "July", "August", "September", "October", "November", "December"
+  ];
 
-  const handleSaveReminder = () => {
-    form
-      .validateFields()
-      .then((values) => {
-        const newReminder = {
-          userId: loggedInUser._id,
-          reminderCategory: values.reminderCategory,
-          reminderTitle: values.reminderTitle,
-          reminderDuration: values.reminderDuration,
-          reminderDueDate: values.reminderDueDate.format("DD/MM/YYYY"),
-          amount: values.amount,
-          type: 'reminder',
-          isCompleted: false,
-          isSnoozed: false,
-          isDeleted: false,
-          key: reminders.length + 1,
-        };
+  const handleMonthChange = (value) => {
+    console.log("Selected Month:", value);
 
-        setReminders([...reminders, newReminder]);
-        postRemindersData(newReminder)
-
-        form.resetFields();
-        setIsModalOpen(false);
-      })
-      .catch((error) => console.log("Validation Failed:", error));
   };
 
 
+  // Load reminders from localStorage on component mount
+  useEffect(() => {
+    if (loggedInUser && Array.isArray(loggedInUser.reminders)) {
+      const userReminders = loggedInUser.reminders.map((item, index) => ({
+        ...item,
+        reminderDueDate: dayjs(item.reminderDueDate).format("DD/MM/YYYY"),
+        key: index,
+      }));
+      setReminders(userReminders);
+    }
+  }, []);
+
+  const handleNewReminder = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleSaveReminder = async () => {
+    try {
+      const values = await form.validateFields();
+
+      const newReminder = {
+        userId: loggedInUser._id,
+        reminderCategory: values.reminderCategory,
+        reminderTitle: values.reminderTitle,
+        reminderDuration: values.reminderDuration,
+        reminderDueDate: values.reminderDueDate.format("DD/MM/YYYY"),
+        amount: values.amount,
+        type: 'reminder',
+        isCompleted: false,
+        isSnoozed: false,
+        isDeleted: false,
+        key: reminders.length,
+      };
+
+      await postRemindersData(newReminder);
+
+      const updatedReminders = [...reminders, newReminder];
+      setReminders(updatedReminders);
+
+      // Update localStorage with new reminder
+      const updatedUser = { ...loggedInUser, reminders: updatedReminders };
+      localStorage.setItem('user', JSON.stringify(updatedUser));
+
+      messageApi.success('Reminder added successfully!', 2);
+      form.resetFields();
+      setIsModalOpen(false);
+    } catch (error) {
+      console.error("Validation Failed or API Error:", error);
+      messageApi.error("Failed to add reminder. Try again.", 2);
+    }
+  };
+
+  const handlePayment = () => {
+    try {
+      console.log("Executing Payment");
+      messageApi.success("Marked as payment Done", 2);
+    } catch (error) {
+      console.log("Error in payment the reminder", error);
+      messageApi.error("Failed to mark as payment, try again..!");
+    }
+  };
+
+  const handleSnooze = () => {
+    try {
+      console.log("Executing snooze");
+      messageApi.warning("Notifications paused for 4 weeks", 2);
+    } catch (error) {
+      console.log("Error in snoozing the reminder", error);
+      messageApi.error("Failed to snooze, try again..!");
+    }
+  };
+
+  const handelEdit = () => {
+    try {
+      console.log("Executing Editing");
+      messageApi.loading("Loading..please wait", 2);
+    } catch (error) {
+      console.log("Error in <Edit></Edit> the reminder", error);
+      messageApi.error("Failed to Edit, try again..!");
+    }
+  };
+
+  const handleDelete = () => {
+    try {
+      messageApi.loading("Performing Delete Operation", 2);
+      console.log("Executing Delete");
+    } catch (error) {
+      console.log("Error in Delete the reminder", error);
+      messageApi.error("Failed to Delete, try again..!");
+    }
+  };
+
   const columns = [
-    
-    { title: "Reminder", dataIndex: "reminderCategory", key: "reminderCategory", className: 'text-center',},
-    
-    { title: "Title", dataIndex: "reminderTitle", key: "reminderTitle", className: 'text-center',},
-    
-    { title: "Duration", dataIndex: "reminderDuration", key: "reminderDuration", className: 'text-center',},
-    
-    { title: "Due Date", dataIndex: "reminderDueDate", key: "reminderDueDate", className: 'text-center',},
-    
-    { title: "Amount (₹)", dataIndex: "amount", key: "amount", className: 'text-center',},
+    { title: "Reminder", dataIndex: "reminderCategory", key: "reminderCategory", className: 'text-center' },
+    { title: "Title", dataIndex: "reminderTitle", key: "reminderTitle", className: 'text-center' },
+    { title: "Duration", dataIndex: "reminderDuration", key: "reminderDuration", className: 'text-center' },
+    { title: "Due Date", dataIndex: "reminderDueDate", key: "reminderDueDate", className: 'text-center' },
+    { title: "Amount (₹)", dataIndex: "amount", key: "amount", className: 'text-center' },
     {
       title: "Action",
       key: "action",
       className: 'text-center',
       render: (_, record) => (
         <Space size="middle">
-          <Button>Mark as Completed</Button>
-          <Button>Snooze</Button>
-          <Button>Edit</Button>
-          <Button danger>Delete</Button>
+          <Button onClick={handlePayment}>Payment Completed</Button>
+          <Button onClick={handleSnooze}>Snooze</Button>
+          <Button onClick={handelEdit}>Edit</Button>
+          <Button danger onClick={handleDelete}>Delete</Button>
         </Space>
       ),
     },
@@ -82,90 +140,105 @@ const TableComponent = () => {
 
   return (
     <>
+      {contextHolder}
       <div>
         <header className='d-flex justify-content-between align-items-center gap-1 my-2 px-3'>
           <div className="section1">
             <h5>Reminders Table</h5>
           </div>
+          {/* <div className="section2 d-flex align-items-center gap-2 filter">
+            <h6 className='my-1'>Filter:</h6>
+            <Select
+              placeholder="Select Month"
+              style={{ width: 150 }}
+              onChange={handleMonthChange}
+            >
+              {months.map((month, index) => (
+                <Select.Option key={index} value={month}>
+                  {month}
+                </Select.Option>
+              ))}
+            </Select>
+            <button>Sort</button>
+          </div> */}
           <div className="section2 filter">
             <button onClick={handleNewReminder}>Add New</button>
           </div>
         </header>
-        <div className="expensestable container bg-light"></div>
-        <Table
-          scroll={{ x: "max-content" }}
-          columns={columns}
-          dataSource={reminders}
-          pagination={{
-            current: currentPage,
-            pageSize: pageSize,
-            total: reminders.length,
-            showSizeChanger: true,
-            pageSizeOptions: ['5', '10', '20'],
-            onChange: (page, size) => {
-              setCurrentPage(page);
-              setPageSize(size);
-            },
-          }}
-        />
-
-        {/* New Reminder */}
-        <Modal
-          title="Add New Reminder"
-          open={isModalOpen}
-          onCancel={() => setIsModalOpen(false)}
-          onOk={handleSaveReminder}
-        >
-          <Form form={form} layout="vertical">
-            <Form.Item
-              label="reminderCategory"
-              name="reminderCategory"
-              rules={[{ required: true, message: "Enter Reminder Category" }]}
-              
-            >
-              <Input placeholder="e.g., Subscription, Rent, Loan Payment"/>
-            </Form.Item>
-
-            <Form.Item
-              label="Reminder Title"
-              name="reminderTitle"
-              rules={[{ required: true, message: "Enter reminder title" }]}
-            >
-              <Input placeholder="e.g., Amazon, Netflix, Electricity Bill" />
-            </Form.Item>
-
-            <Form.Item
-              label="Reminder Duration"
-              name="reminderDuration"
-              rules={[{ required: true, message: "Select duration" }]}
-            >
-              <Select placeholder="Select duration">
-                <Option value="Daily">Daily</Option>
-                <Option value="Weekly">Weekly</Option>
-                <Option value="Monthly">Monthly</Option>
-                <Option value="Yearly">Yearly</Option>
-              </Select>
-            </Form.Item>
-
-            <Form.Item
-              label="Due Date"
-              name="reminderDueDate"
-              rules={[{ required: true, message: "Select due date" }]}
-            >
-              <DatePicker format="DD/MM/YYYY" style={{ width: "100%" }} />
-            </Form.Item>
-
-            <Form.Item
-              label="Amount (₹)"
-              name="amount"
-              rules={[{ required: true, message: "Enter amount" }]}
-            >
-              <Input  placeholder="Enter amount" />
-            </Form.Item>
-          </Form>
-        </Modal>
-
       </div>
+
+      <div className="expensestable container bg-light"></div>
+      <Table
+        scroll={{ x: "max-content" }}
+        columns={columns}
+        dataSource={reminders}
+        pagination={{
+          current: currentPage,
+          pageSize: pageSize,
+          total: reminders.length,
+          showSizeChanger: true,
+          pageSizeOptions: ['5', '10', '20'],
+          onChange: (page, size) => {
+            setCurrentPage(page);
+            setPageSize(size);
+          },
+        }}
+      />
+
+      {/* New Reminder */}
+      <Modal
+        title="Add New Reminder"
+        open={isModalOpen}
+        onCancel={() => setIsModalOpen(false)}
+        onOk={handleSaveReminder}
+      >
+        <Form form={form} layout="vertical">
+          <Form.Item
+            label="reminderCategory"
+            name="reminderCategory"
+            rules={[{ required: true, message: "Enter Reminder Category" }]}
+          >
+            <Input placeholder="e.g., Subscription, Rent, Loan Payment" />
+          </Form.Item>
+
+          <Form.Item
+            label="Reminder Title"
+            name="reminderTitle"
+            rules={[{ required: true, message: "Enter reminder title" }]}
+          >
+            <Input placeholder="e.g., Amazon, Netflix, Electricity Bill" />
+          </Form.Item>
+
+          <Form.Item
+            label="Reminder Duration"
+            name="reminderDuration"
+            rules={[{ required: true, message: "Select duration" }]}
+          >
+            <Select placeholder="Select duration">
+              <Option value="Daily">Daily</Option>
+              <Option value="Weekly">Weekly</Option>
+              <Option value="Monthly">Monthly</Option>
+              <Option value="Yearly">Yearly</Option>
+            </Select>
+          </Form.Item>
+
+          <Form.Item
+            label="Due Date"
+            name="reminderDueDate"
+            rules={[{ required: true, message: "Select due date" }]}
+          >
+            <DatePicker format="DD/MM/YYYY" style={{ width: "100%" }} />
+          </Form.Item>
+
+          <Form.Item
+            label="Amount (₹)"
+            name="amount"
+            rules={[{ required: true, message: "Enter amount" }]}
+          >
+            <Input placeholder="Enter amount" />
+          </Form.Item>
+        </Form>
+      </Modal>
     </>
   );
 };
