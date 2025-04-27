@@ -35,10 +35,10 @@ const Home = () => {
       setIsLoading(true);
       try {
         const data = await getDashBoardData();
-        // console.log("fetched data in Home", data)
+        
 
         const userDetails = data?.find(user => user.email === loggedInUser.email);
-        // console.log("userdetails from db", userDetails)
+        
 
         if (userDetails) {
           setUserName(userDetails.username);
@@ -84,13 +84,13 @@ const Home = () => {
     const filteredExpenses = filterByDateRange(expenses);
     const filteredTransactions = filterByDateRange(transactions);
   
-    // Helper to calculate percentage change
+    
     const calculatePercentageChange = (current, previous) => {
       if (!previous || previous === 0) return current === 0 ? 0 : 100;
       return ((current - previous) / previous * 100).toFixed(2);
     };
   
-    // Grouping data by month for comparison
+    
     const groupByMonth = (arr) => {
       return arr.reduce((acc, curr) => {
         const month = dayjs(curr.date).format('YYYY-MM');
@@ -132,7 +132,7 @@ const Home = () => {
       startY: 70,
       head: [['Category', 'Total', 'Previous Month', '% Change']],
       body: [
-        ['Income', `₹${totalIncome}`, `N/A`, `N/A`], // Income is not monthly, from your data
+        ['Income', `₹${totalIncome}`, `N/A`, `N/A`], 
         ['Expenses', `₹${currentExpenses}`, `₹${previousExpenses}`, `${expensesChange}%`],
         ['Investments', `₹${currentInvestments}`, `₹${previousInvestments}`, `${investmentsChange}%`],
         ['Debts', `₹${currentDebts}`, `₹${previousDebts}`, `${debtsChange}%`],

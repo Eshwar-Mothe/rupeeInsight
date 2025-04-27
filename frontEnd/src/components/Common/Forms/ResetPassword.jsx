@@ -18,7 +18,7 @@ const ResetPassword = () => {
   }, [resetAllowed, navigate, messageApi]);
 
   const onFinish = (values) => {
-    // Your API logic to update the password can go here
+    // API logic to update the password can go here
     console.log("New Password", values.password);
     messageApi.success("Password updated successfully!");
     sessionStorage.removeItem('resetAllowed');

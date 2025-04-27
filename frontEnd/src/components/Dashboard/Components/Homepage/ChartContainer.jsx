@@ -6,7 +6,6 @@ const segment1Options = ["Expense", "Savings", "Debts"];
 const segment2Options = ["Yearly", "Monthly", "Weekly"];
 
 const ChartContainer = () => {
-    // State to track selected filters
     const [selectedSegment1, setSelectedSegment1] = useState("Expense");
     const [selectedSegment2, setSelectedSegment2] = useState("Yearly");
     const loggedInUser = JSON.parse(localStorage.getItem('user'))

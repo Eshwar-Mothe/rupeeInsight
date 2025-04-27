@@ -1,5 +1,5 @@
 import { postRegisterDataUrl, getDashBoardDataUrl, getDebtsDataUrl, getExpensesDataUrl, getInvestmentDataUrl, postExpensesDataUrl, postLoanDataUrl, postLoginDataUrl, postRemindersDataUrl, postEmailVerificationUrl, getReminderDataUrl, updatePaymentStatusUrl, updateReminderUrl, updateSnoozeStatusUrl, postResetPasswordUrl } from './constants'
-// Data posting Apis
+
 const postRegisterData = async (payload) => {
     console.log("payload in postRegisterData", payload);
 

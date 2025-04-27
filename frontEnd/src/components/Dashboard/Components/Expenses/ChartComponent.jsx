@@ -12,7 +12,6 @@ const ChartComponent = ({ selectedSegment1, selectedSegment2, user }) => {
     const futureYears = Array.from({ length: 5 }, (_, i) => currentYear + i);
     const weekLabels = ["Week 1", "Week 2", "Week 3", "Week 4"];
 
-    // Helper function to categorize transactions
     const groupByPeriod = (transactions, period) => {
         return transactions.reduce((acc, transaction) => {
             const date = new Date(transaction.date);
@@ -25,7 +24,6 @@ const ChartComponent = ({ selectedSegment1, selectedSegment2, user }) => {
         }, {});
     };
 
-    // Extract transaction data
     const expenseData = groupByPeriod(user.expenses || [], selectedSegment2);
     const savingsData = groupByPeriod(user.investments || [], selectedSegment2);
     const debtsData = groupByPeriod(user.debts || [], selectedSegment2);

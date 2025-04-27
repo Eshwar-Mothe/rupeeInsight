@@ -1,4 +1,3 @@
-// Expenses.jsx
 import { Layout, Select } from 'antd';
 import React, { useState, useEffect } from 'react';
 import Navbar from '../Navbar';

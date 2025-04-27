@@ -99,8 +99,6 @@ const Reminders = () => {
       title: "Are you sure you want to delete this reminder?",
       onOk: async () => {
         try {
-          // console.log('first')
-          // await deleteReminder(JSON.stringify({ id: record._id }));
           messageApi.success("Deleted reminder", 2);
         } catch (error) {
           console.error("Delete error:", error);

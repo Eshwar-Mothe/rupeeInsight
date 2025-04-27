@@ -38,5 +38,4 @@ export const LoadingProvider = ({ children }) => {
   );
 };
 
-// Custom hook to use loading context
 export const useLoading = () => useContext(LoadingContext);

@@ -85,7 +85,7 @@ const ExpensesTable = () => {
             note: values.note?.trim() || "",
             type: "expense",
             userId: loggedInUser._id,
-            _id: Date.now().toString() // temp unique ID for localStorage
+            _id: Date.now().toString()
         };
     
         let updatedList = [];
@@ -109,17 +109,14 @@ const ExpensesTable = () => {
     
         await postExpensesData(newExpense);
     
-        // Save to localStorage
         const updatedUser = { ...loggedInUser, expenses: updatedList };
         localStorage.setItem("user", JSON.stringify(updatedUser));
     
-        // Reset modal/form
         form.resetFields();
         setIsModalOpen(false);
         setIsEditing(false);
     };
     
-
     const handleEdit = (record) => {
         setIsEditing(true);
         setIsModalOpen(true);
