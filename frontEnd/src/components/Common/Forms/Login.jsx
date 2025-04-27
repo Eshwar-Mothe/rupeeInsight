@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { Form, Input, Button, message } from 'antd';
+import { Form, Input, Button, message,Modal  } from 'antd';
 import NavBar from '../NavBar';
 import { Link, useNavigate } from 'react-router-dom';
 import { postLoginData } from '../../../serviceLayer/api';
 
 const Login = () => {
   const [messageApi, contextHolder] = message.useMessage();
-    const navigate = useNavigate()
+  const [isModalVisible, setIsModalVisible] = useState(false);
+
+  const navigate = useNavigate()
 
   const onFinish = async (values) => {
     const payload = {
@@ -27,7 +29,7 @@ const Login = () => {
         setTimeout(() => {
           navigate('/home');
         }, 1000);
-        
+
       } else {
         messageApi.error(response?.data?.message || "Login failed. Please try again.");
       }
@@ -50,6 +52,19 @@ const Login = () => {
     document.body.classList.add(theme);
   }, [theme]);
 
+  const showModal = () => {
+    setIsModalVisible(true);
+  };
+  
+  const handleOk = () => {
+    setIsModalVisible(false);
+    navigate('/home');
+  };
+  
+  const handleCancel = () => {
+    setIsModalVisible(false);
+  };
+  
   return (
     <>
       {contextHolder}
@@ -86,13 +101,26 @@ const Login = () => {
 
         <div style={{ textAlign: 'center', marginTop: '10px' }}>
           <div>
-            <Link to="/forgot-password" className='link'>Forgot Password</Link>
+            <Link to="/forgotpassword" className='link'>Forgot Password</Link>
             <span style={{ margin: '0 8px' }}>|</span>
             <span>New User?<Link to="/signup" className='link'> Sign up</Link></span>
             <br />
-            <span>Try Features?<Link to="/home" className='link'> Guest Mode</Link></span>
+            <span>Try Features?
+              <span onClick={showModal} className='link' style={{ cursor: 'pointer' }}> Guest Mode</span>
+            </span>
           </div>
         </div>
+
+        <Modal
+          title="Guest Mode"
+          open={isModalVisible}
+          onOk={handleOk}
+          onCancel={handleCancel}
+          okText="Continue as Guest"
+        >
+          <p>You're about to try the app in Guest Mode. Some features may be limited. and not worked Properly</p>
+        </Modal>
+
       </div>
     </>
   );

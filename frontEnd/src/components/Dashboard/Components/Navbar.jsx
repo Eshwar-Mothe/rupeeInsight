@@ -20,7 +20,7 @@ const Navbar = ({ onNavClick }) => {
         } else {
             setProfileImage(null)
         }
-    }, [loggedInUser._id])
+    }, [loggedInUser?._id])
 
 
     const handleToggle = () => {

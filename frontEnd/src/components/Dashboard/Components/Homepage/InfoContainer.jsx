@@ -7,7 +7,6 @@ const InfoContainer = () => {
     const [totalDebts, setTotalDebts] = useState(0);
     const [totalInvestments, setTotalInvestments] = useState(0);
     const [percentageChanges, setPercentageChanges] = useState({
-        income: 0,
         expenses: 0,
         debts: 0,
         investments: 0
@@ -15,10 +14,23 @@ const InfoContainer = () => {
 
     const loggedInUser = JSON.parse(localStorage.getItem('user'));
 
+    const getLastWorkingDay = () => {
+        let lastDayOfMonth = dayjs().endOf('month');
+        while (lastDayOfMonth.day() === 0 || lastDayOfMonth.day() === 6) {
+            lastDayOfMonth = lastDayOfMonth.subtract(1, 'day');
+        }
+        return lastDayOfMonth.format('DD MMMM YYYY');
+    };
+
+    const renewDate = getLastWorkingDay();
+
     const calculatePercentageChange = (items) => {
         const monthlyTotals = {};
 
-        console.log("items",items)
+        console.log("items", items, 'pC', percentageChanges);
+
+        if (!Array.isArray(items)) return 0;
+
         items.forEach(item => {
             const month = dayjs(item.date).format("YYYY-MM");
             monthlyTotals[month] = (monthlyTotals[month] || 0) + item.amount;
@@ -52,16 +64,17 @@ const InfoContainer = () => {
                 setTotalDebts(totalLoans);
                 setTotalInvestments(totalSavings);
 
-                const income =      loggedInUser.income || [];
-                const expenses =    loggedInUser.expenses || [];
-                const debts =       loggedInUser.debts || [];
-                const investments = loggedInUser.investments || [];
+                const incomeData = loggedInUser.totals.totalIncome || [];
+                const expensesData = loggedInUser.expenses || [];
+                const debtsData = loggedInUser.debts || [];
+                const investmentsData = loggedInUser.investments || [];
+
+                console.log('incomeData,expensesData,debtsData,investmentsData', incomeData, expensesData, debtsData, investmentsData);
 
                 setPercentageChanges({
-                    income: calculatePercentageChange(income),
-                    expenses: calculatePercentageChange(expenses),
-                    debts: calculatePercentageChange(debts),
-                    investments: calculatePercentageChange(investments)
+                    expenses: calculatePercentageChange(expensesData),
+                    debts: calculatePercentageChange(debtsData),
+                    investments: calculatePercentageChange(investmentsData)
                 });
             }
         } catch (error) {
@@ -88,8 +101,9 @@ const InfoContainer = () => {
                     </header>
                     <p id='amount'>&#8377;<span>{incomeAmount}</span></p>
                     <p id="change" className='infoLine' >
-                        <span id='percentage'>{Math.abs(percentageChanges.income)}%</span>
-                        <span className='arrow'>{percentageChanges.income >= 0 ? '↑' : '↓'}</span> from last month
+                        <span style={{ color: 'black' }}>
+                            Next renew on <span className='credit'>{renewDate}</span>
+                        </span>
                     </p>
                 </div>
 
@@ -99,9 +113,9 @@ const InfoContainer = () => {
                         <div className="section2"><img src='sprite2.png' style={{ width: '25px', height: '25px', objectFit: 'cover' }} alt='icon' /></div>
                     </header>
                     <p id='amount'>&#8377;<span>{expensesAmount}</span></p>
-                    <p id="change" className='infoLine' >
+                    <p id="change" className={`infoline ${percentageChanges.expenses > 0 ? 'expense' : 'credit'}`} >
                         <span id='percentage'>{Math.abs(percentageChanges.expenses)}%</span>
-                        <span className='arrow'>{percentageChanges.expenses >= 0 ? '↑' : '↓'}</span> from last month
+                        <span className='arrow'>{percentageChanges.expenses >= 0 ? '↓'  : '↑' }</span> from last month
                     </p>
                 </div>
 
@@ -111,7 +125,7 @@ const InfoContainer = () => {
                         <div className="section2"><img src='sprite3.png' style={{ width: '25px', height: '25px', objectFit: 'cover' }} alt='icon' /></div>
                     </header>
                     <p id='amount'>&#8377;<span>{totalDebts}</span></p>
-                    <p id="change" className='infoLine' >
+                    <p id="change" className={`infoline ${percentageChanges.expenses > 0 ? 'expense' : 'credit'}`} >
                         <span id='percentage'>{Math.abs(percentageChanges.debts)}%</span>
                         <span className='arrow'>{percentageChanges.debts >= 0 ? '↑' : '↓'}</span> from last month
                     </p>
@@ -123,7 +137,7 @@ const InfoContainer = () => {
                         <div className="section2"><img src='sprite4.png' style={{ width: '25px', height: '25px', objectFit: 'cover' }} alt='icon' /></div>
                     </header>
                     <p id='amount'>&#8377;<span>{totalInvestments}</span></p>
-                    <p id="change" className='infoLine' >
+                    <p id="change" className='infoline' >
                         <span id='percentage'>{Math.abs(percentageChanges.investments)}%</span>
                         <span className='arrow'>{percentageChanges.investments >= 0 ? '↑' : '↓'}</span> from last month
                     </p>

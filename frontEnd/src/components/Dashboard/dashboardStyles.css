@@ -197,7 +197,7 @@ body {
     font-size: 1.5rem;
 }
 
-.debit {
+.expense {
     color: red;
     font-weight: 600;
     font-size: 1rem;
@@ -205,6 +205,12 @@ body {
 
 .credit {
     color: green;
+    font-weight: 600;
+    font-size: 1rem;
+}
+
+.debt{
+    color: rgb(197, 161, 0);
     font-weight: 600;
     font-size: 1rem;
 }

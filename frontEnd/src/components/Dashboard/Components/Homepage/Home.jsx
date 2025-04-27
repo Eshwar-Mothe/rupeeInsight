@@ -29,7 +29,7 @@ const Home = () => {
 
   useEffect(() => {
 
-    if (!loggedInUser.email) return;
+    if (!loggedInUser?.email) return;
 
     const fetchUserDetails = async () => {
       setIsLoading(true);
@@ -52,7 +52,7 @@ const Home = () => {
       }
     };
     fetchUserDetails();
-  }, [loggedInUser._id]);
+  }, [loggedInUser?._id]);
 
   useEffect(() => {
     const hasShown = sessionStorage.getItem('welcomeShown');

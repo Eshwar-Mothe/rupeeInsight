@@ -200,6 +200,12 @@ footer{
   margin-block-start: 7rem;
 }
 
+.reviewCard{
+  border-radius: 50px;
+  border: 2px solid black;
+  box-shadow: 0 0 10px gray;
+}
+
 /* Media Quesries */
 @media (max-width: 576px) { 
   .carousel .card-container .image{

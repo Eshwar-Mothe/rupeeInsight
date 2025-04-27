@@ -10,8 +10,8 @@ const ChartContainer = () => {
     const [selectedSegment1, setSelectedSegment1] = useState("Expense");
     const [selectedSegment2, setSelectedSegment2] = useState("Yearly");
     const loggedInUser = JSON.parse(localStorage.getItem('user'))
-    const userId = loggedInUser._id
-    const registeredYear = loggedInUser.createdAt.split("-")[0]
+    const userId = loggedInUser?._id
+    const registeredYear = loggedInUser?.createdAt.split("-")[0]
 
     return (
         <div className="chartContainer">

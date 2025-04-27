@@ -7,12 +7,14 @@ const postRegisterDataUrl = `${baseUrl}/signup`;
 const postEmailVerificationUrl = `${baseUrl}/sendMail`;
 const postVerifyOtpUrl = `${baseUrl}/verifyOtp`;
 const postLoginDataUrl = `${baseUrl}/login`;
+const postResetPasswordUrl = `${baseUrl}/reset`
 
 // Expense & Financial data
 const postExpensesDataUrl = `${baseUrl}/expenses`;
 const postRemindersDataUrl = `${baseUrl}/reminders`;
 const postLoanDataUrl = `${baseUrl}/loans`;
 const postInvestmentData = `${baseUrl}/investment`;
+
 
 // Dashboard & Data Fetching
 const getDashBoardDataUrl = `${baseUrl}/home`;
@@ -32,6 +34,7 @@ export {
     postEmailVerificationUrl,
     postVerifyOtpUrl,
     postLoginDataUrl,
+    postResetPasswordUrl,
     postExpensesDataUrl,
     postRemindersDataUrl,
     postLoanDataUrl,

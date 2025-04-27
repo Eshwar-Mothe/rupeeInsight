@@ -55,8 +55,8 @@ const Reminders = () => {
   const refreshData = () => {
     setLoading(true);
     setTimeout(() => {
-      window.location.reload();
-    }, 500);
+     setLoading(false)
+    }, 1000);
   };
 
   const handlePayment = async (record) => {
@@ -93,14 +93,15 @@ const Reminders = () => {
     }
   };
 
-  const handleDelete = async (record) => {
+  const handleDelete = async () => {
+    console.log('am triggered')
     Modal.confirm({
       title: "Are you sure you want to delete this reminder?",
       onOk: async () => {
         try {
-          await deleteReminder(JSON.stringify({ id: record._id }));
+          // console.log('first')
+          // await deleteReminder(JSON.stringify({ id: record._id }));
           messageApi.success("Deleted reminder", 2);
-          refreshData();
         } catch (error) {
           console.error("Delete error:", error);
           messageApi.error("Delete failed");
@@ -176,7 +177,7 @@ const Reminders = () => {
           <Button className="antd-button" onClick={() => handleEdit(record)}>
             Edit
           </Button>
-          <Button danger onClick={() => handleDelete(record)}>
+          <Button danger onClick={() => handleDelete()}>
             Delete
           </Button>
         </Space>

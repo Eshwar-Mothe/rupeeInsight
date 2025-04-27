@@ -10,7 +10,6 @@ import {
     DatePicker,
     Select,
     message,
-    Popconfirm
 } from "antd";
 import {
     postExpensesData,
@@ -40,7 +39,6 @@ const ExpensesTable = () => {
         Others: []
     };
 
-    // Load expenses from localStorage on first render
     useEffect(() => {
         if (loggedInUser && Array.isArray(loggedInUser.expenses)) {
             const userExpenses = loggedInUser.expenses.map((item, index) => ({
@@ -69,9 +67,7 @@ const ExpensesTable = () => {
         }
     };
 
-    const showModal = () => {
-        setIsModalOpen(true);
-    };
+    const showModal = () => setIsModalOpen(true);
 
     const handleCancel = () => {
         setIsModalOpen(false);
@@ -88,34 +84,41 @@ const ExpensesTable = () => {
             paymentMethod: values.paymentMethod,
             note: values.note?.trim() || "",
             type: "expense",
-            userId: loggedInUser._id
+            userId: loggedInUser._id,
+            _id: Date.now().toString() // temp unique ID for localStorage
         };
-
+    
+        let updatedList = [];
+    
         if (isEditing) {
-            const updatedList = expenses.map((item) =>
-                item.key === editingRecord.key ? { ...item, ...newExpense, date: dayjs(newExpense.date).format("DD/MM/YYYY") } : item
+            updatedList = expenses.map((item) =>
+                item.key === editingRecord.key
+                    ? { ...item, ...newExpense, date: dayjs(newExpense.date).format("DD/MM/YYYY") }
+                    : item
             );
-            setExpenses(updatedList);
-            // await postExpensesData(updatedList)
             messageApi.success("Expense updated successfully!");
         } else {
-            const updatedExpense = [
+            updatedList = [
                 ...expenses,
                 { ...newExpense, date: dayjs(newExpense.date).format("DD/MM/YYYY"), key: expenses.length }
             ];
-            setExpenses(updatedExpense);
             messageApi.success("Expense added successfully!");
         }
-
-        await postExpensesData(newExpense)
-        
-        const updatedUser = { ...loggedInUser, expenses: expenses };
-        localStorage.setItem('user', JSON.stringify(updatedUser));
-
+    
+        setExpenses(updatedList);
+    
+        await postExpensesData(newExpense);
+    
+        // Save to localStorage
+        const updatedUser = { ...loggedInUser, expenses: updatedList };
+        localStorage.setItem("user", JSON.stringify(updatedUser));
+    
+        // Reset modal/form
         form.resetFields();
         setIsModalOpen(false);
         setIsEditing(false);
     };
+    
 
     const handleEdit = (record) => {
         setIsEditing(true);
@@ -131,7 +134,6 @@ const ExpensesTable = () => {
     };
 
     const handleDelete = (record) => {
-        console.log("am coming to delete")
         Modal.confirm({
             title: "Are you sure you want to delete this expense?",
             okText: "Yes",
@@ -156,19 +158,47 @@ const ExpensesTable = () => {
     };
 
     const columns = [
-        { title: "Category", dataIndex: "category", key: "category" },
-        { title: "Sub Category", dataIndex: "subcategory", key: "subcategory" },
+        {
+            title: "Category",
+            dataIndex: "category",
+            key: "category",
+            sorter: (a, b) => a.category.localeCompare(b.category),
+            className:"text-center"
+        },
+        {
+            title: "Sub Category",
+            dataIndex: "subcategory",
+            key: "subcategory",
+            sorter: (a, b) => a.subcategory.localeCompare(b.subcategory),
+            className:"text-center"
+        },
         {
             title: "Amount (₹)",
             dataIndex: "amount",
             key: "amount",
-            render: (amount) => `₹${amount}`
+            render: (amount) => `₹${amount}`,
+            sorter: (a, b) => a.amount - b.amount,
+            className:"text-center"
         },
-        { title: "Date", dataIndex: "date", key: "date" },
-        { title: "Payment Method", dataIndex: "paymentMethod", key: "paymentMethod" },
+        {
+            title: "Date",
+            dataIndex: "date",
+            key: "date",
+            sorter: (a, b) =>
+                dayjs(a.date, "DD/MM/YYYY").unix() - dayjs(b.date, "DD/MM/YYYY").unix(),
+            className:"text-center"
+        },
+        {
+            title: "Payment Method",
+            dataIndex: "paymentMethod",
+            key: "paymentMethod",
+            sorter: (a, b) => a.paymentMethod.localeCompare(b.paymentMethod),
+            className:"text-center"
+        },
         {
             title: "Actions",
             key: "actions",
+            className:"text-center",
             render: (_, record) => (
                 <>
                     <Button type="link" onClick={() => handleEdit(record)}>
@@ -178,8 +208,8 @@ const ExpensesTable = () => {
                         Delete
                     </Button>
                 </>
-            )
-        }
+            ),
+        },
     ];
 
     return (
@@ -196,6 +226,12 @@ const ExpensesTable = () => {
                 columns={columns}
                 rowKey={(record) => record._id || record.key}
                 scroll={{ x: "max-content" }}
+                pagination={{
+                    pageSize: 5,
+                    showSizeChanger: true,
+                    pageSizeOptions: ['5', '10', '20', '50'],
+                    showTotal: (total, range) => `${range[0]}-${range[1]} of ${total} items`,
+                }}
             />
 
             <Modal

@@ -5,7 +5,7 @@ import { Link, useLocation } from 'react-router-dom';
 const NavBar = ({ heroRef, statsRef, featuresRef, aboutRef, taxRef, reviewsRef }) => {
   const [activeSection, setActiveSection] = useState('');
   const location = useLocation();
-  const isAuthPage = location.pathname === '/signin' || location.pathname === '/signup';
+  const isAuthPage = location.pathname === '/signin' || location.pathname === '/signup' || location.pathname === '/forgotpassword';
 
   const [theme, setTheme] = useState(() => localStorage.getItem('theme') || '🌙');
   const [animate, setAnimate] = useState(false);

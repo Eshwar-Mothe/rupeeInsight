@@ -1,7 +1,18 @@
 import React, { useEffect, useState } from 'react';
-import { Space, Table, Button, Modal, Form, Input, Select, DatePicker, message } from 'antd';
+import {
+  Space,
+  Table,
+  Button,
+  Modal,
+  Form,
+  Input,
+  Select,
+  DatePicker,
+  message,
+} from 'antd';
 import { postRemindersData } from '../../../../serviceLayer/api';
 import dayjs from 'dayjs';
+
 const { Option } = Select;
 
 const TableComponent = () => {
@@ -14,23 +25,18 @@ const TableComponent = () => {
 
   const loggedInUser = JSON.parse(localStorage.getItem('user'));
 
-  const months = [
-    "January", "February", "March", "April", "May", "June",
-    "July", "August", "September", "October", "November", "December"
-  ];
-
-  const handleMonthChange = (value) => {
-    console.log("Selected Month:", value);
-
+  const durationOrder = {
+    Daily: 1,
+    Weekly: 2,
+    Monthly: 3,
+    Yearly: 4,
   };
 
-
-  // Load reminders from localStorage on component mount
   useEffect(() => {
     if (loggedInUser && Array.isArray(loggedInUser.reminders)) {
       const userReminders = loggedInUser.reminders.map((item, index) => ({
         ...item,
-        reminderDueDate: dayjs(item.reminderDueDate).format("DD/MM/YYYY"),
+        reminderDueDate: dayjs(item.reminderDueDate).format('DD/MM/YYYY'),
         key: index,
       }));
       setReminders(userReminders);
@@ -50,7 +56,7 @@ const TableComponent = () => {
         reminderCategory: values.reminderCategory,
         reminderTitle: values.reminderTitle,
         reminderDuration: values.reminderDuration,
-        reminderDueDate: values.reminderDueDate.format("DD/MM/YYYY"),
+        reminderDueDate: values.reminderDueDate.format('DD/MM/YYYY'),
         amount: values.amount,
         type: 'reminder',
         isCompleted: false,
@@ -64,7 +70,6 @@ const TableComponent = () => {
       const updatedReminders = [...reminders, newReminder];
       setReminders(updatedReminders);
 
-      // Update localStorage with new reminder
       const updatedUser = { ...loggedInUser, reminders: updatedReminders };
       localStorage.setItem('user', JSON.stringify(updatedUser));
 
@@ -72,67 +77,102 @@ const TableComponent = () => {
       form.resetFields();
       setIsModalOpen(false);
     } catch (error) {
-      console.error("Validation Failed or API Error:", error);
-      messageApi.error("Failed to add reminder. Try again.", 2);
+      console.error('Validation Failed or API Error:', error);
+      messageApi.error('Failed to add reminder. Try again.', 2);
     }
   };
 
   const handlePayment = () => {
     try {
-      console.log("Executing Payment");
-      messageApi.success("Marked as payment Done", 2);
+      console.log('Executing Payment');
+      messageApi.success('Marked as payment Done', 2);
     } catch (error) {
-      console.log("Error in payment the reminder", error);
-      messageApi.error("Failed to mark as payment, try again..!");
+      console.log('Error in payment the reminder', error);
+      messageApi.error('Failed to mark as payment, try again..!');
     }
   };
 
   const handleSnooze = () => {
     try {
-      console.log("Executing snooze");
-      messageApi.warning("Notifications paused for 4 weeks", 2);
+      console.log('Executing snooze');
+      messageApi.warning('Notifications paused for 4 weeks', 2);
     } catch (error) {
-      console.log("Error in snoozing the reminder", error);
-      messageApi.error("Failed to snooze, try again..!");
+      console.log('Error in snoozing the reminder', error);
+      messageApi.error('Failed to snooze, try again..!');
     }
   };
 
   const handelEdit = () => {
     try {
-      console.log("Executing Editing");
-      messageApi.loading("Loading..please wait", 2);
+      console.log('Executing Editing');
+      messageApi.loading('Loading..please wait', 2);
     } catch (error) {
-      console.log("Error in <Edit></Edit> the reminder", error);
-      messageApi.error("Failed to Edit, try again..!");
+      console.log('Error in <Edit></Edit> the reminder', error);
+      messageApi.error('Failed to Edit, try again..!');
     }
   };
 
   const handleDelete = () => {
     try {
-      messageApi.loading("Performing Delete Operation", 2);
-      console.log("Executing Delete");
+      messageApi.loading('Performing Delete Operation', 2);
+      console.log('Executing Delete');
     } catch (error) {
-      console.log("Error in Delete the reminder", error);
-      messageApi.error("Failed to Delete, try again..!");
+      console.log('Error in Delete the reminder', error);
+      messageApi.error('Failed to Delete, try again..!');
     }
   };
 
   const columns = [
-    { title: "Reminder", dataIndex: "reminderCategory", key: "reminderCategory", className: 'text-center' },
-    { title: "Title", dataIndex: "reminderTitle", key: "reminderTitle", className: 'text-center' },
-    { title: "Duration", dataIndex: "reminderDuration", key: "reminderDuration", className: 'text-center' },
-    { title: "Due Date", dataIndex: "reminderDueDate", key: "reminderDueDate", className: 'text-center' },
-    { title: "Amount (₹)", dataIndex: "amount", key: "amount", className: 'text-center' },
     {
-      title: "Action",
-      key: "action",
+      title: 'Reminder',
+      dataIndex: 'reminderCategory',
+      key: 'reminderCategory',
+      className: 'text-center',
+      sorter: (a, b) => a.reminderCategory.localeCompare(b.reminderCategory),
+    },
+    {
+      title: 'Title',
+      dataIndex: 'reminderTitle',
+      key: 'reminderTitle',
+      className: 'text-center',
+      sorter: (a, b) => a.reminderTitle.localeCompare(b.reminderTitle),
+    },
+    {
+      title: 'Duration',
+      dataIndex: 'reminderDuration',
+      key: 'reminderDuration',
+      className: 'text-center',
+      sorter: (a, b) =>
+        durationOrder[a.reminderDuration] - durationOrder[b.reminderDuration],
+    },
+    {
+      title: 'Due Date',
+      dataIndex: 'reminderDueDate',
+      key: 'reminderDueDate',
+      className: 'text-center',
+      sorter: (a, b) =>
+        dayjs(a.reminderDueDate, 'DD/MM/YYYY').unix() -
+        dayjs(b.reminderDueDate, 'DD/MM/YYYY').unix(),
+    },
+    {
+      title: 'Amount (₹)',
+      dataIndex: 'amount',
+      key: 'amount',
+      className: 'text-center',
+      sorter: (a, b) => parseFloat(a.amount) - parseFloat(b.amount),
+    },
+    {
+      title: 'Action',
+      key: 'action',
       className: 'text-center',
       render: (_, record) => (
         <Space size="middle">
           <Button onClick={handlePayment}>Payment Completed</Button>
           <Button onClick={handleSnooze}>Snooze</Button>
           <Button onClick={handelEdit}>Edit</Button>
-          <Button danger onClick={handleDelete}>Delete</Button>
+          <Button danger onClick={handleDelete}>
+            Delete
+          </Button>
         </Space>
       ),
     },
@@ -142,25 +182,10 @@ const TableComponent = () => {
     <>
       {contextHolder}
       <div>
-        <header className='d-flex justify-content-between align-items-center gap-1 my-2 px-3'>
+        <header className="d-flex justify-content-between align-items-center gap-1 my-2 px-3">
           <div className="section1">
             <h5>Reminders Table</h5>
           </div>
-          {/* <div className="section2 d-flex align-items-center gap-2 filter">
-            <h6 className='my-1'>Filter:</h6>
-            <Select
-              placeholder="Select Month"
-              style={{ width: 150 }}
-              onChange={handleMonthChange}
-            >
-              {months.map((month, index) => (
-                <Select.Option key={index} value={month}>
-                  {month}
-                </Select.Option>
-              ))}
-            </Select>
-            <button>Sort</button>
-          </div> */}
           <div className="section2 filter">
             <button onClick={handleNewReminder}>Add New</button>
           </div>
@@ -169,7 +194,7 @@ const TableComponent = () => {
 
       <div className="expensestable container bg-light"></div>
       <Table
-        scroll={{ x: "max-content" }}
+        scroll={{ x: 'max-content' }}
         columns={columns}
         dataSource={reminders}
         pagination={{
@@ -185,7 +210,7 @@ const TableComponent = () => {
         }}
       />
 
-      {/* New Reminder */}
+      {/* New Reminder Modal */}
       <Modal
         title="Add New Reminder"
         open={isModalOpen}
@@ -196,7 +221,7 @@ const TableComponent = () => {
           <Form.Item
             label="reminderCategory"
             name="reminderCategory"
-            rules={[{ required: true, message: "Enter Reminder Category" }]}
+            rules={[{ required: true, message: 'Enter Reminder Category' }]}
           >
             <Input placeholder="e.g., Subscription, Rent, Loan Payment" />
           </Form.Item>
@@ -204,7 +229,7 @@ const TableComponent = () => {
           <Form.Item
             label="Reminder Title"
             name="reminderTitle"
-            rules={[{ required: true, message: "Enter reminder title" }]}
+            rules={[{ required: true, message: 'Enter reminder title' }]}
           >
             <Input placeholder="e.g., Amazon, Netflix, Electricity Bill" />
           </Form.Item>
@@ -212,7 +237,7 @@ const TableComponent = () => {
           <Form.Item
             label="Reminder Duration"
             name="reminderDuration"
-            rules={[{ required: true, message: "Select duration" }]}
+            rules={[{ required: true, message: 'Select duration' }]}
           >
             <Select placeholder="Select duration">
               <Option value="Daily">Daily</Option>
@@ -225,15 +250,15 @@ const TableComponent = () => {
           <Form.Item
             label="Due Date"
             name="reminderDueDate"
-            rules={[{ required: true, message: "Select due date" }]}
+            rules={[{ required: true, message: 'Select due date' }]}
           >
-            <DatePicker format="DD/MM/YYYY" style={{ width: "100%" }} />
+            <DatePicker format="DD/MM/YYYY" style={{ width: '100%' }} />
           </Form.Item>
 
           <Form.Item
             label="Amount (₹)"
             name="amount"
-            rules={[{ required: true, message: "Enter amount" }]}
+            rules={[{ required: true, message: 'Enter amount' }]}
           >
             <Input placeholder="Enter amount" />
           </Form.Item>

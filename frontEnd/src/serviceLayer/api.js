@@ -1,4 +1,4 @@
-import { postRegisterDataUrl, getDashBoardDataUrl, getDebtsDataUrl, getExpensesDataUrl, getInvestmentDataUrl, postExpensesDataUrl, postLoanDataUrl, postLoginDataUrl, postRemindersDataUrl, postEmailVerificationUrl, getReminderDataUrl, updatePaymentStatusUrl, updateReminderUrl, updateSnoozeStatusUrl } from './constants'
+import { postRegisterDataUrl, getDashBoardDataUrl, getDebtsDataUrl, getExpensesDataUrl, getInvestmentDataUrl, postExpensesDataUrl, postLoanDataUrl, postLoginDataUrl, postRemindersDataUrl, postEmailVerificationUrl, getReminderDataUrl, updatePaymentStatusUrl, updateReminderUrl, updateSnoozeStatusUrl, postResetPasswordUrl } from './constants'
 // Data posting Apis
 const postRegisterData = async (payload) => {
     console.log("payload in postRegisterData", payload);
@@ -61,6 +61,30 @@ const postLoginData = async (payload) => {
     });
     return await res.json();
 }
+
+
+const postResetPassword = async (payload) => {
+    console.log("payload in postEmailVerificationData", payload);
+
+    const { to, subject, text } = payload;
+
+    const formBody = new URLSearchParams();
+    formBody.append("to", to);
+    formBody.append("subject", subject);
+    formBody.append("text", text);
+
+    console.log("FormBody", formBody);
+
+    const res = await fetch(postResetPasswordUrl, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+        },
+        body: formBody.toString(),
+    });
+
+    return await res.json();
+};
 
 const postExpensesData = async (payload) => {
     try {
@@ -170,4 +194,4 @@ const deleteReminder = async (payload) => {
     })
 }
 
-export { postRegisterData, postLoginData, postEmailVerificationData, postExpensesData, postRemindersData, postLoanData, getDashBoardData, getRemindersData, getDebtsData, getExpensesData, updatePaymentStatusData,updateReminderData,updateSnoozeStatusData,deleteReminder }
+export { postRegisterData, postLoginData, postEmailVerificationData,postResetPassword, postExpensesData, postRemindersData, postLoanData, getDashBoardData, getRemindersData, getDebtsData, getExpensesData, updatePaymentStatusData,updateReminderData,updateSnoozeStatusData,deleteReminder }

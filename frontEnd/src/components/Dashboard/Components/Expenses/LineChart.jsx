@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Card } from "antd";
 import { Line } from "react-chartjs-2";
 import {
@@ -9,9 +9,8 @@ import {
   LineElement,
   Tooltip,
   Legend,
-  Filler
+  Filler,
 } from "chart.js";
-
 
 ChartJS.register(
   CategoryScale,
@@ -23,23 +22,42 @@ ChartJS.register(
   Filler
 );
 
-const LineChart = () => {
-  const title = "Health Expenses";
-  const labels = ["Doctor Visits", "Medicines", "Insurance", "Gym", "Therapy"];
-  const dataValues = [500, 1400, 450, 300, 350];
+const LineChart = ({ title, selectedMonth }) => {
+  const [labels, setLabels] = useState([]);
+  const [values, setValues] = useState([]);
+
+  useEffect(() => {
+    const user = JSON.parse(localStorage.getItem("user"));
+    if (user && Array.isArray(user.expenses)) {
+      const healthExpenses = user.expenses.filter((item) => {
+        const itemDate = new Date(item.date);
+        const itemMonthName = itemDate.toLocaleString("default", { month: "long" });
+        return item.category === "Health" && itemMonthName === selectedMonth;
+      });
+
+      const grouped = {};
+      healthExpenses.forEach((item) => {
+        const sub = item.subcategory || "Others";
+        grouped[sub] = (grouped[sub] || 0) + parseFloat(item.amount);
+      });
+
+      setLabels(Object.keys(grouped));
+      setValues(Object.values(grouped));
+    }
+  }, [selectedMonth]);
 
   const data = {
     labels,
     datasets: [
       {
         label: title,
-        data: dataValues,
+        data: values,
         backgroundColor: "rgba(255, 99, 132, 0.2)",
         borderColor: "red",
         pointBackgroundColor: "red",
         borderWidth: 3,
         fill: true,
-        tension: 0.1
+        tension: 0.1,
       },
     ],
   };
@@ -65,7 +83,11 @@ const LineChart = () => {
   return (
     <Card title={title} className="shadow-lg">
       <div style={{ height: "300px" }}>
-        <Line data={data} options={options} />
+        {values.length > 0 ? (
+          <Line data={data} options={options} />
+        ) : (
+          <p>No Health expenses found for {selectedMonth}.</p>
+        )}
       </div>
     </Card>
   );

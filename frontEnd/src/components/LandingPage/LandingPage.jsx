@@ -30,7 +30,7 @@ const LandingPage = () => {
                 <ImageSection sectionRef={taxRef} />
             </main>
             <footer>
-                <Footer />
+                <Footer heroRef={heroRef} statsRef={statsRef} featuresRef={featuresRef} aboutRef={aboutRef} taxRef={taxRef} reviewsRef={reviewsRef}/>
             </footer>
         </>
     );
